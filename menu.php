@@ -245,9 +245,16 @@ if(!isset($_SESSION['usuario'])){
 					<li class="nav-item">
 						<a class="nav-link" href="#">Produtos</a>
 					</li>
-					<?php if ($_SESSION['tipo_usuario'] == 'A' or $_SESSION['tipo_usuario'] =='V'){
+					<?php if ($_SESSION['tipo_usuario'] =='V'){
 						echo "<li class='nav-item'>
 							<a class='nav-link' href='anuncio.php'>Anúncio</a>
+						</li>";
+						
+						}
+					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'A'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='anuncio_Aprovar.php'>Anúncio</a>
 						</li>";
 						
 						}

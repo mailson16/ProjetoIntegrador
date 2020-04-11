@@ -79,8 +79,8 @@ if($sendCadImg){
 
 		//move_uploaded_file($_FILES['arquivo']['tmp_name'], $diretoria.$nome_nome); //salva o arquivo nesse caminho
 
-	$sql = " INSERT INTO produto (cod_cliente, nome_produto, categoria_produto, tipo_produto, quantidade_produto, valor_produto, vencimento_produto, imagem_produto, descricao_produto) VALUES 
-		('$cod_usuario','$produto','$categoria','$tipo',$quantidade,$preco,'$validade','$diretorio','$descricao')";
+	$sql = " INSERT INTO produto (cod_cliente, nome_produto, categoria_produto, tipo_produto, quantidade_produto, valor_produto, vencimento_produto, imagem_produto, descricao_produto, status_produto) VALUES 
+		('$cod_usuario','$produto','$categoria','$tipo',$quantidade,$preco,'$validade','$diretorio','$descricao','P')";
 	//echo "$sql";
 		//$inserir = mysqli_query($conexao, $sql);*/
 	if($inserir = mysqli_query($conexao, $sql)){
