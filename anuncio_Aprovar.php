@@ -147,7 +147,7 @@ $buscar = mysqli_query($conexao,$sql);
 									<td><?php echo $categoria; ?></td>
 									<td><?php echo $tipo; ?></td>
 									<td>
-										<button onclick="aprova(<?php echo trim($id); ?>)" class="btn btn-success" value="1">Aprovar</button>
+										<button onclick="aprova(<?php echo trim($id); ?>)" type="submit" class="btn btn-success" value="1">Aprovar</button>
 										<a href="anuncio_Reprovar.php?id=<?php echo $id?>" class="btn btn-danger" role="button">Reprovar</a>
 									</td>
       							
