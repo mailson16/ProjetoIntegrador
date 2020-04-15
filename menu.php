@@ -1,4 +1,3 @@
-
 <?php
 include 'script/sessao.php';
 	//echo "cod_usuario " . $_SESSION['cod_usuario'] . "<br>";
@@ -48,7 +47,7 @@ if(!isset($_SESSION['usuario'])){
 						<a class="nav-link" href="#">Pedidos</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Produtos</a>
+						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>
 					<?php if ($_SESSION['tipo_usuario'] =='V'){
 						echo "<li class='nav-item'>
@@ -64,7 +63,7 @@ if(!isset($_SESSION['usuario'])){
 						
 						}
 					?>
-					
+
 					<li class="nav-item">
 						<a class="nav-link" href="#">Relatório</a>
 					</li>
@@ -125,13 +124,15 @@ if(!isset($_SESSION['usuario'])){
 
 		</div>
 
-		<div class="row mb-3">	
+	<div class="row mb-3">	
 			<div class="col-md-4">
 				<div class="card-header text-center h4 text-light">
 					Doces
 				</div>
 				<div class="card">
+					<a href="categoria_doce.php">
 					<img class="card-img-top" src="imagens/brigadeiro.jpg" alt="...">
+					</a>
 				</div>
 			</div>
 
@@ -140,8 +141,9 @@ if(!isset($_SESSION['usuario'])){
 					Salgados
 				</div>
 				<div class="card">
-					
-					<img class="card-img-top" src="imagens/trufa.jpg" alt="...">
+					<a href="categoria_salgado.php">
+					<img class="card-img-top" src="imagens/atum.jpg" alt="...">
+					</a>
 				</div>
 			</div>
 
@@ -150,8 +152,9 @@ if(!isset($_SESSION['usuario'])){
 					Bebidas
 				</div>
 				<div class="card">
-					
-					<img class="card-img-top" src="imagens/atum.jpg" alt="...">
+					<a href="categoria_bebida.php">
+					<img class="card-img-top" src="imagens/suco2.png" alt="...">
+					</a>
 				</div>
 			</div>
 		</div>
