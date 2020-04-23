@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 include 'script/conexao.php';
 include 'script/sessao.php';

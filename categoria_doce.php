@@ -11,10 +11,6 @@ $sql ="select * from Produto where categoria_produto = 'D'
 $buscar = mysqli_query($conexao,$sql);
 
 
-    //busca as categorias
-    //$queryCat = mysql_query("SELECT * FROM categoria_produto");
-    //$categoria = mysql_fetch_array($query);	
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -73,13 +69,13 @@ $buscar = mysqli_query($conexao,$sql);
 			</button>
 			<div class="collapse navbar-collapse h5" id="navbarTogglerDemo01">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
+					<li class="nav-item">
 						<a class="nav-link" href="menu.php">Home<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Pedidos</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item active">
 						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>					
 					<?php if ($_SESSION['tipo_usuario'] == 'A' or $_SESSION['tipo_usuario'] =='V'){
@@ -114,10 +110,10 @@ $buscar = mysqli_query($conexao,$sql);
 			</button>
 			<div class="collapse navbar-collapse h5" id="navbarTogglerDemo01">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
+					<li class="nav-item">
 						<a class="nav-link" href="produtos.php">Todos<span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item active">
 						<a class="nav-link" href="categoria_doce.php">Doces<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">

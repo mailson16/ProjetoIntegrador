@@ -5,16 +5,13 @@ include 'script/sessao.php';
 
 
 $cod_usuario = $_SESSION['cod_usuario'];
+$motivo=filter_input(INPUT_POST,'pesquisar',FILTER_SANITIZE_STRING);
+
 
 $sql = "select * from Produto where categoria_produto = categoria_produto
 	   and status_produto in('A')";
 $buscar = mysqli_query($conexao,$sql);
 
-
-
-    //busca as categorias
-    //$queryCat = mysql_query("SELECT * FROM categoria_produto");
-    //$categoria = mysql_fetch_array($query);	
 
 ?>
 <!DOCTYPE html>
@@ -26,7 +23,8 @@ $buscar = mysqli_query($conexao,$sql);
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="https://kit.fontawesome.com/yourcode.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="script/personalizado.js"></script>
 </head>
 <style type="text/css">
 	#gallerycontent{
@@ -74,13 +72,13 @@ $buscar = mysqli_query($conexao,$sql);
 			</button>
 			<div class="collapse navbar-collapse h5" id="navbarTogglerDemo01">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
+					<li class="nav-item">
 						<a class="nav-link" href="menu.php">Home<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Pedidos</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item active">
 						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>					
 					<?php if ($_SESSION['tipo_usuario'] == 'A' or $_SESSION['tipo_usuario'] =='V'){
@@ -129,9 +127,9 @@ $buscar = mysqli_query($conexao,$sql);
 						<a class="nav-link" href="categoria_bebida.php">Bebidas<span class="sr-only">(current)</span></a>
 					</li>				
 				</ul> 
-				<form class="form-inline my-2 my-lg-0" action="pesquisar.php" method="POST"	  >
-      				<input class="form-control mr-sm-2" type="text" name="pesquisar" placeholder="Search" aria-label="Search">
-      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+				<form class="form-inline my-2 my-lg-0" action="" method="POST"	  >
+      				<input class="form-control mr-sm-2" type="text" name="pesquisar" id="pesquisar" placeholder="Search" aria-label="Search">
+      				<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
     			</form>
 				
 			
@@ -139,61 +137,39 @@ $buscar = mysqli_query($conexao,$sql);
 
 			<div style="padding: 10px">
 				<form action="" method="POST">
-						<table class="table table-dark table-hover responsive">			
-							<div id="gallerycontent">		
-								<?php
-									
-									while ($array = mysqli_fetch_array($buscar)){
+					<div id="gallerycontent">	
+						<?php
 
-									    $produto = $array['imagem_produto'];
-										$descricao = $array['descricao_produto'];
-										$quantidade = $array['quantidade_produto'];
-										$validade = $array['vencimento_produto'];
-										$preco = $array['valor_produto'];
+						while ($array = mysqli_fetch_array($buscar)){
 
-									?>
-									<div class="galleryitem">
-											<img src='<?php echo $produto; ?>' style="width:120px">
-											<b>Descrição:</b> <?php echo $descricao; ?>
-											<br/><br/>
-											<b>Quantidade:</b> <?php echo $quantidade; ?>
-											<br/><br/>
-											<b>Validade:</b> <?php echo $validade; ?>
-											<br/><br/>
-											<b>Preço Unit:</b> <?php echo $preco; ?>
-									</div>			
-									
+							$produto = $array['imagem_produto'];
+							$descricao = $array['descricao_produto'];
+							$quantidade = $array['quantidade_produto'];
+							$validade = $array['vencimento_produto'];
+							$preco = $array['valor_produto'];
+							$id = $array['id_produto'];
 
-								<?php
-									}
-								?>	
+							?>
+
+							<div class="galleryitem">
+								<img src='<?php echo $produto; ?>' style="width:120px">
+								<b>Descrição:</b> <?php echo $descricao; ?>
+								<br/><br/>
+								<b>Quantidade:</b> <?php echo $quantidade; ?>
+								<br/><br/>
+								<b>Validade:</b> <?php echo $validade; ?>
+								<br/><br/>
+								<b>Preço Unit:</b> <?php echo number_format($preco,2,",","."); ?>
+								<a href="teste_carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button">Adicionar</a>
 							</div>			
-						</table>
-					
 
-					<div class="card my-1">
-						<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-								<span class="navbar-toggler-icon"></span>
-							</button>
-							<div class="collapse navbar-collapse h5" id="navbarTogglerDemo01">
-								<ul class="navbar-nav mr-auto">
-									<li class="nav-item active">
-										<a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"></a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#"></a>
-									</li>					
-										
-									<li class="nav-item">
-										<a class="nav-link" href="#"></a>
-									</li>				
-								</ul>
-							</div>										
-						</nav>
+
+							<?php
+						}
+						?>	
+					</div>			
+					<div class="resultado">	
+						
 					</div>
 				</form>
 			</div>
