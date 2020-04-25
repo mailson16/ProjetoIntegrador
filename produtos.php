@@ -19,6 +19,7 @@ $buscar = mysqli_query($conexao,$sql);
 <head>
 	<title>Produtos</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -27,38 +28,8 @@ $buscar = mysqli_query($conexao,$sql);
 	<script type="text/javascript" src="script/personalizado.js"></script>
 </head>
 <style type="text/css">
-	#gallerycontent{
-    float: left;
-    max-width: 1500px;
-    text-align: justify;
+	
 
-
-}
-
-#gallerycontent .galleryitem{
-    width: 436px;
-    height: 250px;
-    background:url('../images/screen.png');
-    background-repeat: no-repeat;
-    padding: 5px 5px 5px 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    clear: both; display:inline-block;
-    text-align: left;
-
-}
-#gallerycontent img{
-    float: left;
-    width: 75%;
-    height: 75%;
-    margin: 2.5%;
-
-}
-#gallerycontent ul{
-    padding-left: 50px;
-    list-style-type:square;
-}
 </style>
 
 <body class="bg-dark">
@@ -97,6 +68,23 @@ $buscar = mysqli_query($conexao,$sql);
 				</ul>
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
+						<?php 
+
+						if(!isset($_SESSION['itens'])){
+						?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i><span class="badge badge-light" style="font-size: 12px"><?php echo count($_SESSION['itens']);?></span></a><?php
+							
+						}?>
+					</li>
+						
+					</li>
+					<li class="nav-item">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="logout.php">Sair</a>
 					</li>
 					
@@ -128,16 +116,25 @@ $buscar = mysqli_query($conexao,$sql);
 					</li>				
 				</ul> 
 				<form class="form-inline my-2 my-lg-0" action="" method="POST"	  >
-      				<input class="form-control mr-sm-2" type="text" name="pesquisar" id="pesquisar" placeholder="Search" aria-label="Search">
-      				<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+      				<input class="form-control mr-sm-2" type="text" name="pesquisar" id="pesquisar" placeholder="Pesquisar" aria-label="Search">
+      				<!--<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>-->
     			</form>
 				
 			
 	</nav>
 
 			<div style="padding: 10px">
+				<div class="row">
+					<div class="resultado" style="padding: 15px">
+
+					</div>
+				</div>
+
 				<form action="" method="POST">
-					<div id="gallerycontent">	
+					<br/>
+
+					<div class="row">
+  						
 						<?php
 
 						while ($array = mysqli_fetch_array($buscar)){
@@ -148,29 +145,29 @@ $buscar = mysqli_query($conexao,$sql);
 							$validade = $array['vencimento_produto'];
 							$preco = $array['valor_produto'];
 							$id = $array['id_produto'];
+							$nome_produto = $array['nome_produto'];
 
 							?>
-
-							<div class="galleryitem">
-								<img src='<?php echo $produto; ?>' style="width:120px">
-								<b>Descrição:</b> <?php echo $descricao; ?>
-								<br/><br/>
-								<b>Quantidade:</b> <?php echo $quantidade; ?>
-								<br/><br/>
-								<b>Validade:</b> <?php echo $validade; ?>
-								<br/><br/>
-								<b>Preço Unit:</b> <?php echo number_format($preco,2,",","."); ?>
-								<a href="teste_carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button">Adicionar</a>
-							</div>			
-
+							
+							<div class="col-md-3">
+								<div class="thumbnail">
+    								<img class="card-img-top" src='<?php echo $produto; ?>' alt="Card image cap">
+    								<div class="caption text-center">
+      									<h5 class="card-title"><?php echo $nome_produto; ?></h5>
+      									<p class="card-text"><?php echo $descricao; ?></p>
+      									<p class="card-text"><b>R$ <?php echo number_format($preco,2,",","."); ?></b></p>
+      									<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button"><i class="material-icons" ;">shopping_cart</i> Adicionar ao Carrinho</a>
+      									</br>
+									</div>
+    							</div>
+    							<br/></br>
+  							</div>	
 
 							<?php
 						}
 						?>	
 					</div>			
-					<div class="resultado">	
-						
-					</div>
+					
 				</form>
 			</div>
 		</div>

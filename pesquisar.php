@@ -12,19 +12,24 @@ $resultado_user = mysqli_query($conexao,$result_user);
 
 if(($resultado_user) and ($resultado_user->num_rows != 0)){
 
+		echo "	<div class='row'>";
 	while ($array = mysqli_fetch_array($resultado_user) ) {
-		echo "<b>Produto:</b>".$array['nome_produto']."</b>";
-		echo "<br><br>";
-		echo "<b>Descrição:</b>".$array['descricao_produto']."</b>";
-		echo "<br><br>";
-		//echo "<b>Descrição:</b>".$array['quantidade']."</b>";
-		//echo "<br><br>";
-		//echo "<b>Validade:</b>".$array['validade']."</b>";
-		//echo "<br><br>";
-		//echo "<b>Preço Unit:</b>".$array['preco']."</b>";
+		echo "	<div class='col'>";
+		echo "	<div class='thumbnail'>";
+    	echo "		<img class='card-img-top' src=".$array['imagem_produto']." alt='Card image cap'>";
+    	echo "		<div class='caption text-center'>";
+      	echo "			<h5 class='card-title'>".$array['nome_produto']."</h5>";
+      	echo "			<p class='card-text'>".$array['descricao_produto']."</p>";
+      	echo "			<p class='card-text'><b>R$ ".number_format($array['valor_produto'],2,",",".")."</b></p>";
+      	echo "			<a href='carrinho.php?add=carrinho&id=".$array['id_produto']." class='btn btn-warning' role='button'><i class='material-icons';'>shopping_cart</i> Adicionar ao Carrinho</a>";
+      	echo "			</br>";
+		echo "		</div>";
+    	echo "	</div>";
+    	echo "	</div>";
+
 
 	}
-
+	echo "	</div>";
 }else{
 	echo "Nenhum produto encontrado";
 }

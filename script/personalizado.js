@@ -2,7 +2,6 @@ $(function(){
 	$("#pesquisar").keyup(function(){
 
 		var pesquisa = $(this).val();
-
 		//Verifica se há algo digitado
 
 		if(pesquisa != ''){
@@ -18,6 +17,8 @@ $(function(){
 				$(".resultado").html(retorna);
 
 			});
+		}else{
+			window.location.href = "produtos.php";
 		}
 
 
