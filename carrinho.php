@@ -82,7 +82,7 @@ if(isset($_GET['add']) && $_GET['add'] =='carrinho'){
 						<a class="nav-link" href="menu.php">Home<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Pedidos</a>
+						<a class="nav-link" href="pedido.php">Pedidos</a>
 					</li>
 					<li class="nav-item active">
 						<a class="nav-link" href="produtos.php">Produtos</a>
