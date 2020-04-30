@@ -7,23 +7,15 @@ include 'script/funcao_usuario.php';
 $cod_usuario = $_SESSION['cod_usuario'];
 
 
-$sql2 = "select * from pedido
-         where COD_CLIENTE = $cod_usuario
-         order by DT_PEDIDO desc";
-$lista_Pedido = mysqli_query($conexao,$sql2);
-
-
-//se for o vendedor vai aparecer a quantidade de pedidos a serem aprovados
-
-$sql3 = "select DISTINCT PED.ID_PEDIDO, PED.COD_CLIENTE, PED.DT_PEDIDO, PED.VALOR_PEDIDO from carrinho_compras c
+$sql2 = "select DISTINCT PED.ID_PEDIDO, PED.COD_CLIENTE, PED.DT_PEDIDO, PED.VALOR_PEDIDO from carrinho_compras c
 		inner join produto p on c.COD_PRODUTO = p.id_produto
 		inner join pedido ped on  c.ID_PEDIDO = ped.ID_PEDIDO
         where p.cod_cliente = $cod_usuario
         and ped.STATUS_PEDIDO='P'
         order by c.ID_PEDIDO";
 
-$total_pedidos = mysqli_query($conexao,$sql3);
-$numero_pedidos = mysqli_num_rows($total_pedidos);
+$lista_Pedido = mysqli_query($conexao,$sql2);
+$numero_pedidos = mysqli_num_rows($lista_Pedido);
 
 
 
@@ -67,7 +59,6 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
     cursor: pointer;
 
 	}
-
 </style>
 
 <body class="bg-light">
@@ -130,56 +121,53 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 	<div style="padding: 10px">
 		<form action="" method="POST">
 				<br>
-				<?php if ($_SESSION['tipo_usuario'] == 'C'){?>
-					<h4>Meus Pedidos</h4>
-				<?php
-
-					}else{?>
-						<nav aria-label="breadcrumb">
-							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><h5>Meus Pedidos<h5></li>
-								<li class="breadcrumb-item active"><a href="aprovar_pedido.php">Aprovação</a>
-								<?php if ($numero_pedidos >= 1) {
-								?>
-									<span class="badge badge-light" style="font-size: 12px"><?php echo "$numero_pedidos";?></span>
-								</li><?php
-								}?>
-													
-							</ol>
-						</nav><?php
-					}?>
-				
+				<nav aria-label="breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><h5>Aprovação<h5></li>
+						<li class="breadcrumb-item active"><a href="pedido.php">Meus Pedidos</a></li>
+					</ol>
+				</nav>
 				<hr class="linetittle" style="background-color: black" />
-                <div >
-                    <button type="button" class="btn btn-primary" onclick="toggleSlideAll()" style="color:white">abrir / fechar todos</button>
+                 <div >
+                    <button type="button" class="btn btn-success" onclick="toggleSlideAll()" style="color:white">abrir / fechar todos</button>
                     <br />
                     <br />
                     <br />
+                 </div>
 				<?php
 				while ($arrayPedido = mysqli_fetch_array($lista_Pedido)){
 					$id = $arrayPedido['ID_PEDIDO'];
 					$data = $arrayPedido['DT_PEDIDO'];
 					$valor_pedido = $arrayPedido['VALOR_PEDIDO'];
+					$cliente = $arrayPedido['COD_CLIENTE'];
 					
 
 					$sql ="select * from pedido p
 					inner join carrinho_compras c on p.ID_PEDIDO = c.ID_PEDIDO
 					INNER join produto pr on c.COD_PRODUTO = pr.id_produto
 					where p.ID_PEDIDO = $id
+					and pr.cod_cliente = $cod_usuario
 					order by p.DT_PEDIDO desc"; 
 					$pedido = mysqli_query($conexao,$sql);
 
 				?>
-				<div class="show_hide" style="background-color: #5aa3cea6;">
+				<div class="show_hide" style="background-color: rgba(92, 181, 95, 0.65);">
 					<div class="row">
 						<div class="col-md-2 text-left">
 							<b>N° Pedido</b> : <?php echo "$id";?>
 						</div>
-						<div class="col-md-4 text-left">
-							<b>Valor do Pedido</b> : <?php echo number_format($valor_pedido,2,",",".");?>
+						<div class="col-md-3 text-left">
+							<b>Cliente</b> : <?php echo RetornaNome($cliente);?>
 						</div>
-						<div class="col-md-4 text-left">
-							<b>Data do Pedido</b> : <?php echo date('d/m/Y H:i:s',strtotime($data));?>
+						<div class="col-md-2 text-left">
+							<b>R$</b> : <?php echo number_format($valor_pedido,2,",",".");?>
+						</div>
+						<div class="col-md-2 text-left">
+							<b>Data</b> : <?php echo date('d/m/Y H:i:s',strtotime($data));?>
+						</div>
+						<div class="col-md-2 text-right">
+							<button onclick="aprova(<?php echo trim($id); ?>)" type="submit" class="btn btn-success" value="1">Aprovar</button>
+							<a href="anuncio_Reprovar.php?id=<?php echo $id?>" class="btn btn-danger" role="button">Reprovar</a>
 						</div>
 					</div>
 				</div>
@@ -192,7 +180,6 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 								<th style="width:328px"></th>
 								<th style="width:152px">Quant.</th>
 								<th style="width:213px">Valor Total</th>
-								<th style="width:230px">Vendedor</th>
 							</tr>
 						</thead>
 						<?php
@@ -210,12 +197,12 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 								<td><?php echo $nome; ?></td>
 								<td><?php echo $quantidade; ?></td>
 								<td><?php echo number_format($preco,2,",","."); ?></td>
-								<td><?php echo RetornaNome($vendedor); ?></td>
 							</tr>
 							<?php	
 						}?>
 					</table>
-				</div><?php
+				</div>
+				<?php
 				}?>
 					
 		</form>
