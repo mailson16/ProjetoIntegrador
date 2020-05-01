@@ -7,13 +7,12 @@ include 'script/funcao_usuario.php';
 $cod_usuario = $_SESSION['cod_usuario'];
 
 
-$sql2 = "select DISTINCT PED.ID_PEDIDO, PED.COD_CLIENTE, PED.DT_PEDIDO, PED.VALOR_PEDIDO from carrinho_compras c
+$sql2 = "select distinct PED.ID_PEDIDO_VENDEDOR, PED.COD_CLIENTE, PED.DT_PEDIDO, PED.VALOR_PEDIDO from carrinho_compras c
 		inner join produto p on c.COD_PRODUTO = p.id_produto
-		inner join pedido ped on  c.ID_PEDIDO = ped.ID_PEDIDO
-        where p.cod_cliente = $cod_usuario
+		inner join pedido_vendedor ped on  c.ID_PEDIDO = ped.ID_PEDIDO
+        where ped.COD_VENDEDOR  = $cod_usuario
         and ped.STATUS_PEDIDO='P'
         order by c.ID_PEDIDO";
-
 $lista_Pedido = mysqli_query($conexao,$sql2);
 $numero_pedidos = mysqli_num_rows($lista_Pedido);
 
@@ -136,16 +135,16 @@ $numero_pedidos = mysqli_num_rows($lista_Pedido);
                  </div>
 				<?php
 				while ($arrayPedido = mysqli_fetch_array($lista_Pedido)){
-					$id = $arrayPedido['ID_PEDIDO'];
+					$id = $arrayPedido['ID_PEDIDO_VENDEDOR'];
 					$data = $arrayPedido['DT_PEDIDO'];
 					$valor_pedido = $arrayPedido['VALOR_PEDIDO'];
 					$cliente = $arrayPedido['COD_CLIENTE'];
 					
 
-					$sql ="select * from pedido p
+					$sql ="select * from pedido_vendedor p
 					inner join carrinho_compras c on p.ID_PEDIDO = c.ID_PEDIDO
 					INNER join produto pr on c.COD_PRODUTO = pr.id_produto
-					where p.ID_PEDIDO = $id
+					where p.ID_PEDIDO_VENDEDOR = $id
 					and pr.cod_cliente = $cod_usuario
 					order by p.DT_PEDIDO desc"; 
 					$pedido = mysqli_query($conexao,$sql);

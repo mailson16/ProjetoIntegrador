@@ -7,7 +7,7 @@ include 'script/funcao_usuario.php';
 $cod_usuario = $_SESSION['cod_usuario'];
 
 
-$sql2 = "select * from pedido
+$sql2 = "select * from pedido_vendedor
          where COD_CLIENTE = $cod_usuario
          order by DT_PEDIDO desc";
 $lista_Pedido = mysqli_query($conexao,$sql2);
@@ -157,16 +157,16 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
                     <br />
 				<?php
 				while ($arrayPedido = mysqli_fetch_array($lista_Pedido)){
-					$id = $arrayPedido['ID_PEDIDO'];
+					$id = $arrayPedido['ID_PEDIDO_VENDEDOR'];
 					$data = $arrayPedido['DT_PEDIDO'];
 					$valor_pedido = $arrayPedido['VALOR_PEDIDO'];
+					$vendedor = $arrayPedido['COD_VENDEDOR'];
 					
 
-					$sql ="select * from pedido p
-					inner join carrinho_compras c on p.ID_PEDIDO = c.ID_PEDIDO
-					INNER join produto pr on c.COD_PRODUTO = pr.id_produto
-					where p.ID_PEDIDO = $id
-					order by p.DT_PEDIDO desc"; 
+					$sql ="select * from produto p 
+					inner join carrinho_compras cc on  p.id_produto = cc.COD_PRODUTO
+					inner join pedido_vendedor pv on p.cod_cliente = pv.COD_VENDEDOR
+					where pv.ID_PEDIDO_VENDEDOR= $id";
 					$pedido = mysqli_query($conexao,$sql);
 
 				?>
@@ -175,10 +175,13 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 						<div class="col-md-2 text-left">
 							<b>N° Pedido</b> : <?php echo "$id";?>
 						</div>
-						<div class="col-md-4 text-left">
+						<div class="col-md-2 text-left">
 							<b>Valor do Pedido</b> : <?php echo number_format($valor_pedido,2,",",".");?>
 						</div>
 						<div class="col-md-4 text-left">
+							<b>Vendedor</b> : <?php echo RetornaNome($vendedor); ?>
+						</div>
+						<div class="col-md-3 text-left">
 							<b>Data do Pedido</b> : <?php echo date('d/m/Y H:i:s',strtotime($data));?>
 						</div>
 					</div>
@@ -192,7 +195,6 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 								<th style="width:328px"></th>
 								<th style="width:152px">Quant.</th>
 								<th style="width:213px">Valor Total</th>
-								<th style="width:230px">Vendedor</th>
 							</tr>
 						</thead>
 						<?php
@@ -210,7 +212,6 @@ $numero_pedidos = mysqli_num_rows($total_pedidos);
 								<td><?php echo $nome; ?></td>
 								<td><?php echo $quantidade; ?></td>
 								<td><?php echo number_format($preco,2,",","."); ?></td>
-								<td><?php echo RetornaNome($vendedor); ?></td>
 							</tr>
 							<?php	
 						}?>

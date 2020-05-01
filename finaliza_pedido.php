@@ -62,6 +62,35 @@ foreach ($_SESSION['dados'] as $produtos) {
 
 
 }
+
+//irá criar os pedidos por vendedor, caso no pedido tenha produtos de vendedores diferentes
+
+$sql2 = "select pe.ID_PEDIDO,pe.COD_CLIENTE, p.cod_cliente as vendedor, pe.DT_PEDIDO,sum(cc.PRECO_PRODUTO) as PRECO_PRODUTO from carrinho_compras cc
+  inner join pedido pe on cc.ID_PEDIDO = pe.ID_PEDIDO
+  inner join produto p on cc.COD_PRODUTO = p.id_produto
+  where pe.ID_PEDIDO = $id_pedido
+  GROUP by vendedor
+  order by p.cod_cliente";
+$buscar2 = mysqli_query($conexao,$sql2);
+
+while ($array2 = mysqli_fetch_array($buscar2)){
+  $id_pedido = $array2['ID_PEDIDO'];
+  $cod_cliente = $array2['COD_CLIENTE'];
+  $cod_vendedor = $array2['vendedor'];
+  $dt_pedido = $array2['DT_PEDIDO'];
+  $preco_produto = $array2['PRECO_PRODUTO'];
+
+  $insert = $conexaos->prepare("
+    insert into pedido_vendedor () values (null,?,?,?,?,?,?)");
+    $insert->bindParam(1,$id_pedido);
+    $insert->bindParam(2,$cod_cliente);
+    $insert->bindParam(3,$cod_vendedor);
+    $insert->bindParam(4,$preco_produto);
+    $insert->bindParam(5,$dt_pedido);
+    $insert->bindParam(6,$status_pedido);
+    $insert->execute();
+} 
+
 if(mysqli_affected_rows($conexao) > 0){
 
 ?>
