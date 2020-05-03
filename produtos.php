@@ -8,8 +8,8 @@ $cod_usuario = $_SESSION['cod_usuario'];
 $motivo=filter_input(INPUT_POST,'pesquisar',FILTER_SANITIZE_STRING);
 
 
-$sql = "select * from Produto where categoria_produto = categoria_produto
-	   and status_produto in('A')";
+$sql = "select * from Produto where
+	   status_produto in('A')";
 $buscar = mysqli_query($conexao,$sql);
 
 
@@ -156,7 +156,13 @@ $buscar = mysqli_query($conexao,$sql);
       									<h5 class="card-title"><?php echo $nome_produto; ?></h5>
       									<p class="card-text"><?php echo $descricao; ?></p>
       									<p class="card-text"><b>R$ <?php echo number_format($preco,2,",","."); ?></b></p>
-      									<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button"><i class="material-icons" ;">shopping_cart</i> Adicionar ao Carrinho</a>
+      									<?php if ($quantidade > 0){?>
+											<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button"><i class="material-icons">shopping_cart</i> Adicionar ao Carrinho</a><?php
+
+      									}else{?>
+
+											<h6 style="color: Red";>Produto Esgotado</h6><?php
+      									}?>
       									</br>
 									</div>
     							</div>

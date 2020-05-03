@@ -44,6 +44,38 @@ $numero_pedidos = mysqli_num_rows($lista_Pedido);
             $(".slidingDiv").slideToggle("slow");
             $(".slidingDiv").toggleClass("clicked");
         }
+
+    function aprova(id) {
+
+            r = confirm("tem certeza que deseja aprovar este pedido? ");
+            if (r == true) {
+                document.getElementsByName.value = '1';
+                $.ajax({
+                    url: 'script/funcao_aprovar.php',
+                    type: 'POST',
+                    data: {
+                        vid: id,
+                        voption: '3'
+                    },
+                    cache: false,
+                    success: function (dataResult) {
+                    	var dataResult = JSON.parse(dataResult);
+                    	if(dataResult.statusCode==200){
+                    		$('#success').html('Data added successfully !'); 						
+                    	}
+                    	else if(dataResult.statusCode==201){
+                    		alert("Error occured !");
+                    	}
+                    }
+
+                });
+
+            } else {
+                alert(" Ação cancelada ! ");
+                $('#loading').hide();
+                return false;
+            }
+        }
 </script>
 <style type="text/css">
 	img {
@@ -166,7 +198,8 @@ $numero_pedidos = mysqli_num_rows($lista_Pedido);
 						</div>
 						<div class="col-md-2 text-right">
 							<button onclick="aprova(<?php echo trim($id); ?>)" type="submit" class="btn btn-success" value="1">Aprovar</button>
-							<a href="anuncio_Reprovar.php?id=<?php echo $id?>" class="btn btn-danger" role="button">Reprovar</a>
+							<!--Habilitar esse botão só depois q gerar o boleto e não haja pagamento do mes
+							<a href="anuncio_Reprovar.php?id=<?php echo $id?>" class="btn btn-danger" role="button">Reprovar</a>-->
 						</div>
 					</div>
 				</div>

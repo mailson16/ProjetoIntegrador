@@ -37,6 +37,21 @@ switch ($sOption) {
 		mysqli_close($conexao);	
 		//$inserir = mysqli_query($conexao, $sql);
      	break;
+    case "3":
+		if ($sOption = "1" and $sID <> ""){
+
+			$sql = " update pedido_vendedor set STATUS_PEDIDO = 'A' 
+					 where ID_PEDIDO_VENDEDOR = '$sID' ";
+			if (mysqli_query($conexao, $sql)) {
+				echo json_encode(array("statusCode"=>200));
+			} 
+			else {
+				echo json_encode(array("statusCode"=>201));
+			}
+		}
+		mysqli_close($conexao);	
+		//$inserir = mysqli_query($conexao, $sql);
+     	break;
     default:
         echo "Your favorite color is neither red, blue, nor green!";
 }
