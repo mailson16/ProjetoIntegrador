@@ -155,6 +155,7 @@ $buscar = mysqli_query($conexao,$sql);
     								<div class="caption text-center">
       									<h5 class="card-title"><?php echo $nome_produto; ?></h5>
       									<p class="card-text"><?php echo $descricao; ?></p>
+      									<p class="card-text" style="color: green">Em estoque: <?php echo $quantidade; ?></p>
       									<p class="card-text"><b>R$ <?php echo number_format($preco,2,",","."); ?></b></p>
       									<?php if ($quantidade > 0){?>
 											<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button"><i class="material-icons">shopping_cart</i> Adicionar ao Carrinho</a><?php

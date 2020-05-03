@@ -155,7 +155,11 @@ if(isset($_GET['add']) && $_GET['add'] =='carrinho'){
 									
 									<td><img src='<?php echo $img_produto; ?>' style="width:120px"></td>
 									<td><?php echo $produtos[0]["nome_produto"]; ?></td>
-									<td><?php echo $quantidade; ?></td>
+									<?php if ($quantidade = 0){?>
+										<td><?php echo $quantidade; ?></td><?php
+									}else{?>
+										<td style="color: Red";>Produto Esgotado</td><?php
+									}?>
 									<td><?php echo number_format($produtos[0]["valor_produto"],2,",","."); ?></td>
 									<td><?php echo number_format($total,2,",","."); ?></td>
 									<td><a href="remover_carrinho.php?remover=carrinho&id=<?php echo $idProduto?>"class="btn btn-outline-danger">Remover</a></td>
