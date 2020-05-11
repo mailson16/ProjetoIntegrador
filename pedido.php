@@ -3,6 +3,12 @@ include 'script/conexao.php';
 include 'script/sessao.php';
 include 'script/funcao_usuario.php';
 
+// Definir a zona geográfica padrão.
+date_default_timezone_set("America/Sao_Paulo");
+
+// Pegar o último dia.
+$P_Dia = date("Y-m-01");
+$U_Dia = date("Y-m-t");
 
 $cod_usuario = $_SESSION['cod_usuario'];
 
@@ -10,6 +16,7 @@ $cod_usuario = $_SESSION['cod_usuario'];
 $sql2 = "select * from pedido_vendedor
          where COD_CLIENTE = $cod_usuario
          and STATUS_PEDIDO = 'P'
+         and DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
          order by DT_PEDIDO desc";
 $lista_Pedido = mysqli_query($conexao,$sql2);
 
@@ -17,6 +24,7 @@ $lista_Pedido = mysqli_query($conexao,$sql2);
 $sql4 = "select * from pedido_vendedor
          where COD_CLIENTE = $cod_usuario
          and STATUS_PEDIDO = 'A'
+         and DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
          order by DT_PEDIDO desc";
 $lista_Pedido_Finalizados = mysqli_query($conexao,$sql4);
 
@@ -29,6 +37,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 			inner join pedido_vendedor ped on  c.ID_PEDIDO = ped.ID_PEDIDO
 			where ped.COD_VENDEDOR  = $cod_usuario
 			and ped.STATUS_PEDIDO='P'
+			and ped.DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
 			order by c.ID_PEDIDO";
 	
 	$lista_pedidos_vendedor = mysqli_query($conexao,$sql3);

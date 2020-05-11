@@ -147,6 +147,7 @@ if(isset($_GET['add']) && $_GET['add'] =='carrinho'){
 							$select->execute();
 							$produtos = $select->fetchAll();
 							$img_produto = $produtos[0]["imagem_produto"];
+							$qtd = $produtos[0]["quantidade_produto"];
 							$total = $quantidade * $produtos[0]["valor_produto"];
 							$totalGeral = $total + $totalGeral;
 							$totalPedido = number_format($totalGeral,2,",",".")
@@ -155,7 +156,7 @@ if(isset($_GET['add']) && $_GET['add'] =='carrinho'){
 									
 									<td><img src='<?php echo $img_produto; ?>' style="width:120px"></td>
 									<td><?php echo $produtos[0]["nome_produto"]; ?></td>
-									<?php if ($quantidade = 0){?>
+									<?php if ($qtd > 0){?>
 										<td><?php echo $quantidade; ?></td><?php
 									}else{?>
 										<td style="color: Red";>Produto Esgotado</td><?php

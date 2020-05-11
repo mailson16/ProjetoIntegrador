@@ -63,10 +63,14 @@ if(!isset($_SESSION['usuario'])){
 						
 						}
 					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'C'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='rel_usuario.php'>Relatório</a>
+						</li>";
+						
+						}
+					?>
 
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
-					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>

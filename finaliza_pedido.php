@@ -70,6 +70,7 @@ foreach ($_SESSION['dados'] as $produtos) {
   $insert->execute();
 
   $teste  = $produtos['id_produto'];
+  $nome_produto  = $produtos['nome_produto'];
   $testeQtd  = $produtos['quantidade']; //quantidade comprada
 
   $sqlConsulta = " select quantidade_produto from produto
@@ -84,7 +85,8 @@ foreach ($_SESSION['dados'] as $produtos) {
       array_push(
         $_SESSION['esgotado'], 
         array(
-        'id_pedido' => $id_pedido
+        'id_pedido' => $id_pedido,
+        'nome_produto' => $nome_produto
 
         )
       );
@@ -106,6 +108,7 @@ $pedido_excluir = '';
 
 foreach ($_SESSION['esgotado'] as $lixo) {
   $pedido_excluir = $lixo['id_pedido'];
+  $nome_produto = $lixo['nome_produto'];
 
 }
 //se houve algum pedido repetido irá excluir o pedido
@@ -125,13 +128,14 @@ if($pedido_excluir != ''){
         <h4 class="modal-title" id="exampleModalLabel">&nbsp;&nbsp;Pedido não finalizado</h5>
       </div>
       <div class="modal-body">
-        <h6>Desculpe, Mas um ou mais produto(s) foi esgotado ou não tem mais a quantidade solicitada enquanto você finalizava a sua compra.</h6>
+        <h6>Desculpe, mas um ou mais produto(s) foi esgotado ou não tem mais a quantidade solicitada enquanto você finalizava a sua compra.</h6>
         <h6>Para continuar, retire o mesmo do seu carrinho</h6>
+        <h6 style="color: red"><?php echo $nome_produto;?></h6>
       </div>
     </div>
   </div>
 </div><?php
-echo '<META HTTP-EQUIV="REFRESH" CONTENT="6; URL=carrinho.php"/>';
+echo '<META HTTP-EQUIV="REFRESH" CONTENT="10; URL=carrinho.php"/>';
 
 }else{
   foreach ($_SESSION['atualizar_estoque'] as $atualizar) {
