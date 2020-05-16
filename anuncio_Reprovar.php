@@ -60,16 +60,13 @@ while ($array = mysqli_fetch_array($buscar)){
 						<a class="nav-link" href="menu.php">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Pedidos</a>
+						<a class="nav-link" href="pedido.php">Pedidos</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Produtos</a>
+						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>
 					<li class="nav-item active">
 						<a class="nav-link" href="anuncio_Aprovar.php">Anúncio</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>

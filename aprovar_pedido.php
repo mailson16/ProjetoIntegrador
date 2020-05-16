@@ -119,9 +119,22 @@ $numero_pedidos = mysqli_num_rows($lista_Pedido);
 						
 						}
 					?>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
-					</li>
+					<?php if ($_SESSION['tipo_usuario'] == 'V'){
+						echo "<li class='nav-item dropdown'>
+								<a class='nav-link' data-toggle='dropdown' href='#' >Relatório</a>
+
+								<div class='dropdown-menu'>
+									<a class='dropdown-item' href='rel_usuario.php'>Relatório de Pedidos</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+    							</div>
+							 </li>";
+						
+						}
+					?>
+					
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>

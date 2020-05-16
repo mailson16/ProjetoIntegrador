@@ -26,6 +26,7 @@ $buscar = mysqli_query($conexao,$sql);
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="script/personalizado.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <style type="text/css">
 	
@@ -59,9 +60,28 @@ $buscar = mysqli_query($conexao,$sql);
 						
 						}
 					?>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
-					</li>
+					<?php if ($_SESSION['tipo_usuario'] == 'C'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='rel_usuario.php'>Relatório</a>
+						</li>";
+						
+						}
+					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'V'){
+						echo "<li class='nav-item dropdown'>
+								<a class='nav-link' data-toggle='dropdown' href='#' >Relatório</a>
+
+								<div class='dropdown-menu'>
+									<a class='dropdown-item' href='rel_usuario.php'>Relatório de Pedidos</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+    							</div>
+							 </li>";
+						
+						}
+					?>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>

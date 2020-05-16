@@ -1,5 +1,6 @@
 <?php
 include 'script/sessao.php';
+include 'script/conexao.php';
 	//echo "cod_usuario " . $_SESSION['cod_usuario'] . "<br>";
 	//echo "tipo de usuario " . $_SESSION['tipo_usuario'] . "<br>";
 
@@ -11,6 +12,7 @@ include 'script/sessao.php';
 	<meta name="viewport" content="initial-scale=1.0, user=scalable=no" />
 	<title>Menu Principal</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -22,10 +24,18 @@ include 'script/sessao.php';
 
 //session_start();
 
+$cod_usuario = $_SESSION['cod_usuario'];
 $usuario = $_SESSION['usuario'];
 if(!isset($_SESSION['usuario'])){
 	header('location:index.php');
 }
+
+$sqlBol = "select * from boleto
+            where COD_CLIENTE  = $cod_usuario
+            and status_boleto  = 'P' ";
+$lista_Boleto = mysqli_query($conexao,$sqlBol);
+$existe = mysqli_num_rows($lista_Boleto);
+
 
 ?>
 <body style="background-color: rgba(231, 29, 29, 0.68);">
@@ -70,12 +80,54 @@ if(!isset($_SESSION['usuario'])){
 						
 						}
 					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'V'){
+						echo "<li class='nav-item dropdown'>
+								<a class='nav-link' data-toggle='dropdown' href='#' >Relatório</a>
+
+								<div class='dropdown-menu'>
+									<a class='dropdown-item' href='rel_usuario.php'>Relatório de Pedidos</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+    							</div>
+							 </li>";
+						
+						}
+					?>
 
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<?php 
+
+						if($existe == ''){
+						?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i><span class="badge badge-light" style="font-size: 12px"><?php echo $existe;?></span></a><?php
+							
+						}?>
+					</li>
+					<li class="nav-item">
+						<?php 
+
+						if(!isset($_SESSION['itens'])){
+						?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i><span class="badge badge-light" style="font-size: 12px"><?php echo count($_SESSION['itens']);?></span></a><?php
+							
+						}?>
+					</li>
+					<li class="nav-item">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="logout.php">Sair</a>
 					</li>
@@ -206,6 +258,4 @@ if(!isset($_SESSION['usuario'])){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
-</body>
->>>>>>> Primeiro Commit
 </html>

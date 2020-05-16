@@ -135,7 +135,7 @@ if($pedido_excluir != ''){
     </div>
   </div>
 </div><?php
-echo '<META HTTP-EQUIV="REFRESH" CONTENT="10; URL=carrinho.php"/>';
+echo '<META HTTP-EQUIV="REFRESH" CONTENT="4; URL=carrinho.php"/>';
 
 }else{
   foreach ($_SESSION['atualizar_estoque'] as $atualizar) {
@@ -175,23 +175,52 @@ echo '<META HTTP-EQUIV="REFRESH" CONTENT="10; URL=carrinho.php"/>';
   	$insert->execute();
   } 
   
-  if(mysqli_affected_rows($conexao) > 0){?>
+  if(mysqli_affected_rows($conexao) > 0){
 
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header alert-success">
-			<h5 class="modal-title" id="exampleModalLabel">&nbsp;&nbsp;Pedido Efetuado com Sucesso!</h5>
-			</div>
-			<div class="modal-body">
-			<h6>Seu pedido foi enviado para o vendedor</h6>
-			</div>
-		</div>
-		</div>
-	</div><?php
-	
-	unset($_SESSION['itens']);  //após finalizar a compra, limpa o carrinho de compras
-	echo '<META HTTP-EQUIV="REFRESH" CONTENT="2; URL=pedido.php"/>';
+      //verifico se existe algum boleto pendente do cliente com esse vendedor
+      $sqlBol = "select periodo_boleto, valor_boleto from boleto
+            where COD_CLIENTE  = $cod_usuario
+            and status_boleto  = 'P' ";
+            $lista_Boleto = mysqli_query($conexao,$sqlBol);
+            $existe = mysqli_num_rows($lista_Boleto);
+            if ($existe >= 1) {?>
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header alert-warning">
+                      <h5 class="modal-title" id="exampleModalLabel">&nbsp;&nbsp;Pedido Efetuado com Sucesso!</h5>
+                    </div>
+                    <div class="modal-body">
+                      <h6>
+                        Você possui pendência(s) de pagamento em nosso sistema.
+                      </h6>
+                      <h6>
+                        Seu pedido foi realizado e encaminhado para o vendedor, podendo ser aprovado ou não.
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div><?php
+  
+              unset($_SESSION['itens']);  //após finalizar a compra, limpa o carrinho de compras
+              echo '<META HTTP-EQUIV="REFRESH" CONTENT="5; URL=pedido.php"/>';
+            }else{?>
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header alert-success">
+                      <h5 class="modal-title" id="exampleModalLabel">&nbsp;&nbsp;Pedido Efetuado com Sucesso!</h5>
+                    </div>
+                    <div class="modal-body">
+                      <h6>Seu pedido foi enviado para o vendedor</h6>
+                    </div>
+                  </div>
+                </div>
+                </div><?php
+
+                unset($_SESSION['itens']);  //após finalizar a compra, limpa o carrinho de compras
+                echo '<META HTTP-EQUIV="REFRESH" CONTENT="4; URL=pedido.php"/>';
+            }
 	}
 }
 ?>

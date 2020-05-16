@@ -43,17 +43,36 @@ include 'script/sessao.php';
 						<a class="nav-link" href="menu.php">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Pedidos</a>
+						<a class="nav-link" href="pedido.php">Pedidos</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Produtos</a>
+						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="anuncio.php">Anúncio</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
-					</li>
+					<?php if ($_SESSION['tipo_usuario'] == 'C'){
+						echo "<li class='nav-item active'>
+							<a class='nav-link' href='rel_usuario.php'>Relatório</a>
+						</li>";
+						
+						}
+					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'V'){
+						echo "<li class='nav-item dropdown'>
+								<a class='nav-link' data-toggle='dropdown' href='#' >Relatório</a>
+
+								<div class='dropdown-menu'>
+									<a class='dropdown-item' href='rel_usuario.php'>Relatório de Pedidos</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+    							</div>
+							 </li>";
+						
+						}
+					?>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>

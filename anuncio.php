@@ -26,6 +26,7 @@ $negado = mysqli_query($conexao,$sql2);
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="text/javascript" >
 		
 		function excluir(id) {
@@ -77,7 +78,7 @@ $negado = mysqli_query($conexao,$sql2);
 						<a class="nav-link" href="menu.php">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Pedidos</a>
+						<a class="nav-link" href="pedido.php">Pedidos</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="produtos.php">Produtos</a>
@@ -85,9 +86,28 @@ $negado = mysqli_query($conexao,$sql2);
 					<li class="nav-item active">
 						<a class="nav-link" href="anuncio.php">Anúncio</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Relatório</a>
-					</li>
+					<?php if ($_SESSION['tipo_usuario'] == 'C'){
+						echo "<li class='nav-item active'>
+							<a class='nav-link' href='rel_usuario.php'>Relatório</a>
+						</li>";
+						
+						}
+					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'V'){
+						echo "<li class='nav-item dropdown'>
+								<a class='nav-link' data-toggle='dropdown' href='#' >Relatório</a>
+
+								<div class='dropdown-menu'>
+									<a class='dropdown-item' href='rel_usuario.php'>Relatório de Pedidos</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
+									<div class='dropdown-divider'></div>
+									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+    							</div>
+							 </li>";
+						
+						}
+					?>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Minha Conta</a>
 					</li>

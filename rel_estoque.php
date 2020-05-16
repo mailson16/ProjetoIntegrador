@@ -8,6 +8,7 @@ $cod_usuario = $_SESSION['cod_usuario'];
 $data_de=filter_input(INPUT_POST,'data_de',FILTER_SANITIZE_STRING);
 $data_ate=filter_input(INPUT_POST,'data_ate',FILTER_SANITIZE_STRING);
 $btn=filter_input(INPUT_POST,'pesquisa',FILTER_SANITIZE_STRING);
+$categoria=filter_input(INPUT_POST,'categoria',FILTER_SANITIZE_STRING);
 $total = "";
 
 if ($btn =='1') {
@@ -36,7 +37,7 @@ if ($btn =='1') {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Relatório de Pedidos</title>
+	<title>Acompanhamento de Estoque</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
@@ -90,10 +91,14 @@ if ($btn =='1') {
 <style type="text/css">
 	#caixa{
 		border-radius: 5px;
-		background-color: #5aa3cea6;
+		background-color: #8290a9eb;
 		box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	}
 	#caixa2{
+		justify-content: center; 
+		padding: 5%;
+	}
+	#caixa4{
 		justify-content: center; 
 		padding: 5%;
 	}
@@ -184,7 +189,7 @@ if ($btn =='1') {
 	</nav>
 	<div class="container" style="padding: 20px;">
 		<form name="form" action="" method="post">
-			<h4>Relatório de Pedidos</h4>
+			<h4>Acompanhamento de Estoque</h4>
 			<hr>
 			<div class="container" id="caixa">
 				<div class="row" id="caixa2" >
@@ -196,7 +201,17 @@ if ($btn =='1') {
 						<label class="font-weight-bold">Até:</label>
 						<input type="date" class="form-control" name="data_ate">
 					</div>
+					<div class="form-group col-md-7" id="caixa4" >
+					<label class="font-weight-bold">Categoria</label>
+					<select name="categoria" class="form-control">
+						<option value="">Selecionar...</option>
+						<option value="D">Doce</option>
+						<option value="S">Salgado</option>
+						<option value="B">Bebida</option>
+					</select>
 				</div>
+				</div>
+				
 				<div class="row" style="justify-content: center;">
 					<div class="form-group col-md-1">
 						<button onclick=" return verifica()" class="btn btn-success btn-md " name="pesquisa" value="1">&nbsp;&nbsp;Buscar&nbsp;&nbsp;</button>
