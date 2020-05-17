@@ -36,6 +36,23 @@ $sqlBol = "select * from boleto
 $lista_Boleto = mysqli_query($conexao,$sqlBol);
 $existe = mysqli_num_rows($lista_Boleto);
 
+//se for o vendedor vai aparecer a quantidade de pedidos a serem aprovados
+
+// Pegar o último dia.
+$P_Dia = date("Y-m-01");
+$U_Dia = date("Y-m-t");
+
+if ($_SESSION['tipo_usuario'] == 'V'){
+	$sql3 = "select distinct PED.ID_PEDIDO_VENDEDOR, PED.COD_CLIENTE, PED.DT_PEDIDO, PED.VALOR_PEDIDO from carrinho_compras c
+			inner join produto p on c.COD_PRODUTO = p.id_produto
+			inner join pedido_vendedor ped on  c.ID_PEDIDO = ped.ID_PEDIDO
+			where ped.COD_VENDEDOR  = $cod_usuario
+			and ped.STATUS_PEDIDO='P'
+			and ped.DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
+			order by c.ID_PEDIDO";
+	$lista_pedidos_vendedor = mysqli_query($conexao,$sql3);
+	$numero_pedidos = mysqli_num_rows($lista_pedidos_vendedor);
+}
 
 ?>
 <body style="background-color: rgba(231, 29, 29, 0.68);">
@@ -53,9 +70,17 @@ $existe = mysqli_num_rows($lista_Boleto);
 					<li class="nav-item active">
 						<a class="nav-link" href="menu.php">Home <span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="pedido.php">Pedidos</a>
-					</li>
+					<?php if ($_SESSION['tipo_usuario'] =='V'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='pedido.php'>Pedidos <span class='badge badge-light' style='font-size: 12px'>$numero_pedidos</span></a>
+						</li>";
+						
+						}else{
+							echo "<li class='nav-item'>
+									<a class='nav-link' href='pedido.php'>Pedidos</a>
+								</li>";
+						}
+					?>
 					<li class="nav-item">
 						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>
@@ -97,7 +122,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 					?>
 
 					<li class="nav-item">
-						<a class="nav-link" href="#">Minha Conta</a>
+						<a class="nav-link" href="conta.php">Minha Conta</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">

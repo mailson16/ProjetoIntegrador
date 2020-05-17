@@ -16,13 +16,17 @@ $sql2 = "select distinct PED.ID_PEDIDO_VENDEDOR, PED.COD_CLIENTE, PED.DT_PEDIDO,
 $lista_Pedido = mysqli_query($conexao,$sql2);
 $numero_pedidos = mysqli_num_rows($lista_Pedido);
 
-
+$sqlBol = "select * from boleto
+            where COD_CLIENTE  = $cod_usuario
+            and status_boleto  = 'P' ";
+$lista_Boleto = mysqli_query($conexao,$sqlBol);
+$existe = mysqli_num_rows($lista_Boleto);
 
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Produtos</title>
+	<title>Pedidos</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>

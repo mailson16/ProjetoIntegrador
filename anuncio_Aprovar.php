@@ -7,7 +7,11 @@ $cod_usuario = $_SESSION['cod_usuario'];
 $sql ="select * from Produto where status_produto = 'P' ";
 $buscar = mysqli_query($conexao,$sql);
 
-
+$sqlBol = "select * from boleto
+            where COD_CLIENTE  = $cod_usuario
+            and status_boleto  = 'P' ";
+$lista_Boleto = mysqli_query($conexao,$sqlBol);
+$existe = mysqli_num_rows($lista_Boleto);
 
 ?>
 <!DOCTYPE html>
@@ -16,6 +20,7 @@ $buscar = mysqli_query($conexao,$sql);
 	<title>Anúncios</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -79,10 +84,37 @@ $buscar = mysqli_query($conexao,$sql);
 						<a class="nav-link" href="anuncio_Aprovar.php">Anúncio</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Minha Conta</a>
+						<a class="nav-link" href="conta.php">Minha Conta</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<?php 
+
+						if($existe == ''){
+						?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i><span class="badge badge-light" style="font-size: 12px"><?php echo $existe;?></span></a><?php
+							
+						}?>
+					</li>
+					<li class="nav-item">
+						<?php 
+
+						if(!isset($_SESSION['itens'])){
+						?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="carrinho.php"><i class="material-icons" style="font-size: 30px">shopping_cart</i><span class="badge badge-light" style="font-size: 12px"><?php echo count($_SESSION['itens']);?></span></a><?php
+							
+						}?>
+					</li>
+					<li class="nav-item">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="logout.php">Sair</a>
 					</li>

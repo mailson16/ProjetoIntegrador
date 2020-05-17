@@ -45,6 +45,12 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 
 }
 
+$sqlBol = "select * from boleto
+            where COD_CLIENTE  = $cod_usuario
+            and status_boleto  = 'P' ";
+$lista_Boleto = mysqli_query($conexao,$sqlBol);
+$existe = mysqli_num_rows($lista_Boleto);
+
 
 ?>
 <!DOCTYPE html>
@@ -86,14 +92,8 @@ if ($_SESSION['tipo_usuario'] == 'V'){
                     voption: '3'
                 },
                 cache: false,
-                success: function (dataResult) {
-                	var dataResult = JSON.parse(dataResult);
-                	if(dataResult.statusCode==200){
-                		$('#success').html('Data added successfully !'); 						
-                	}
-                	else if(dataResult.statusCode==201){
-                		alert("Error occured !");
-                	}
+                success: function (response) {
+                	location.reload();
                 }
 
             });
@@ -141,10 +141,17 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					<li class="nav-item">
 						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>					
-					<?php if ($_SESSION['tipo_usuario'] == 'A' or $_SESSION['tipo_usuario'] =='V'){
+					<?php if ($_SESSION['tipo_usuario'] =='V'){
 						echo "<li class='nav-item'>
-								<a class='nav-link' href='anuncio.php'>Anúncio</a>
-							  </li>";
+							<a class='nav-link' href='anuncio.php'>Anúncio</a>
+						</li>";
+						
+						}
+					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'A'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='anuncio_Aprovar.php'>Anúncio</a>
+						</li>";
 						
 						}
 					?>
@@ -171,10 +178,22 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 						}
 					?>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Minha Conta</a>
+						<a class="nav-link" href="conta.php">Minha Conta</a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<?php 
+
+						if($existe == ''){
+						?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i><span class="badge badge-light" style="font-size: 12px"><?php echo $existe;?></span></a><?php
+							
+						}?>
+					</li>
 					<li class="nav-item">
 						<?php 
 

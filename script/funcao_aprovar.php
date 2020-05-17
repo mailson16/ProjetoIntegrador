@@ -43,7 +43,8 @@ switch ($sOption) {
 			$sql = " update pedido_vendedor set STATUS_PEDIDO = 'A' 
 					 where ID_PEDIDO_VENDEDOR = '$sID' ";
 			if (mysqli_query($conexao, $sql)) {
-				echo json_encode(array("statusCode"=>200));
+				$response = array("success" => true);
+    			echo json_encode($response);
 			} 
 			else {
 				echo json_encode(array("statusCode"=>201));
