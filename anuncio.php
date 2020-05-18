@@ -5,7 +5,7 @@ include 'script/sessao.php';
 $cod_usuario = $_SESSION['cod_usuario'];
 
 $sql ="select * from Produto where cod_cliente = $cod_usuario 
-	   and status_produto in('A')";
+	   ";
 $buscar = mysqli_query($conexao,$sql);
 
 
@@ -85,10 +85,39 @@ if ($_SESSION['tipo_usuario'] == 'V'){
                 return false;
             }
         }
+
+        function atualizar() {
+  
+        var status 		= form.status.value;
+        var qtd 		= form.qtd.value;
+        var preco 		= form.preco.value;
+        var validade 	= form.validade.value;
+        var id 			= form.id_produto.value;
+        var descricao 	= form.descricao.value;
+ 
+        $.ajax({
+                url: 'script/funcao_aprovar.php',
+				type: 'POST',
+                data: {
+					status,
+					qtd,
+					preco,
+					validade,
+					id,
+					descricao,
+					voption: '6'
+				},
+                cache: false,
+                success: function(response) {
+                    location.reload();
+                    //$(".resultado").html(response); //para mostrar alguma mensagem na tela
+                }
+        });   
+       
+    }
 	</script>
 </head>
-
-<body class="bg-dark">
+<body class="bg-dark" style="padding-left: 30px">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
@@ -211,24 +240,37 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 						<th>Quantidade</th>
 						<th>Validade</th>
 						<th>Preço</th>
+						<th>Status</th>
+						<th></th>
 					</tr>
 				</thead>
 						
 				<?php
 								
 					while ($array = mysqli_fetch_array($buscar)){
-
+						$id = $array['id_produto'];
 						$produto = $array['imagem_produto'];
 						$quantidade = $array['quantidade_produto'];
 						$validade = $array['vencimento_produto'];
 						$preco = $array['valor_produto'];
+						$nome = $array['nome_produto'];
+						$detalhe = $array['descricao_produto'];
+						$situacao = $array['STATUS_PRODUTO'];
+						if ($situacao == 'A') {
+							$sit = 'Ativo';
+						}else{
+							$sit = 'Inativo';
+						}
 						?>
 						<tr>
 									
 							<td><img src='<?php echo $produto; ?>' style="width:120px"></td>
 							<td><?php echo $quantidade; ?></td>
-							<td><?php echo $validade; ?></td>
-							<td><?php echo $preco; ?></td>
+							<td><?php echo date('d/m/Y',strtotime($validade)); ?></td>
+							<td>R$ <?php echo number_format($preco,2,",","."); ?></td>
+							<td><?php echo $sit ?></td>
+							<td>
+							<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $id ?>" data-whateverqtd="<?php echo $quantidade ?>"data-whateverpreco="<?php echo $preco ?>"data-whateverval="<?php echo $validade ?>" data-whatevernome="<?php echo $nome ?>" data-whateverdetalhe="<?php echo $detalhe ?>" data-whateversit="<?php echo $situacao ?>">Editar</button></td>
 						</tr>
 						<?php
 					}
@@ -277,6 +319,47 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					?>	
 			</table>
 		</div>
+		
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"></h5>
+					</div>
+					<div class="modal-body">
+						<form name="form" action="" method="post">
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Situação do Anúncio:</label>
+								<select class="form-control" name="status" id="teste">
+									<option value="A" <?php ($situacao == 'A')?'selected':''?> >Ativo</option>
+									<option value="I" <?php ($situacao == 'I')?'selected':''?> >Inativo</option>
+								</select> 
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Quantidade:</label>
+								<input type="number" class="form-control" name="qtd" id="qtd">
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Preço:</label>
+								<input type="number" class="form-control" name="preco" id="preco">
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Validade:</label>
+								<input type="date" class="form-control" name="validade" id="validade">
+							</div>
+							<div class="form-group">
+								<label for="message-text" class="col-form-label">Descrição:</label>
+								<textarea class="form-control" name="descricao" id="descricao"></textarea>
+							</div>
+							<input type="hidden" name="id_produto" id="id_produto">
+							<div class="modal-footer">
+								<button onclick=" return atualizar()" type="button" class="btn btn-primary">Atualizar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row bg-dark">
 		<div class="container">
@@ -309,5 +392,30 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$('#exampleModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  var recipientnome = button.data('whatevernome') // Extract info from data-* attributes
+  var recipientval = button.data('whateverval') // Extract info from data-* attributes
+  var recipientpreco = button.data('whateverpreco') // Extract info from data-* attributes
+  var recipientqtd = button.data('whateverqtd') // Extract info from data-* attributes
+  var recipientdetalhe = button.data('whateverdetalhe') // Extract info from data-* attributes
+  var recipientsituacao = button.data('whateversit') // Extract info from data-* attributes
+  
+  var modal = $(this)
+  //modelo para usar com string
+  //modal.find('.modal-title').text('New message to ' + recipientnome)
+  modal.find('.modal-title').text(recipientnome)
+  modal.find('.modal-body #id_produto').val(recipient)
+  modal.find('.modal-body #qtd').val(recipientqtd)
+  modal.find('.modal-body #preco').val(recipientpreco)
+  modal.find('.modal-body #validade').val(recipientval)
+  modal.find('.modal-body textarea').val(recipientdetalhe)
+  modal.find('.modal-body select').val(recipientsituacao)
+
+
+})
+	</script>
 </body>
 </html>

@@ -7,6 +7,15 @@ $sOption = $_POST['voption'];
 $sID     = $_POST['vid'];
 $vendedor = $_POST['vendedor'];
 
+$status = $_POST['status'];
+$qtd     = $_POST['qtd'];
+$preco = $_POST['preco'];
+$validade = $_POST['validade'];
+$id     = $_POST['id'];
+$descricao = $_POST['descricao'];
+
+
+
 switch ($sOption) {
 	case "1":
 		if ($sOption = "1" and $sID <> ""){
@@ -153,7 +162,23 @@ switch ($sOption) {
 			
 		//$inserir = mysqli_query($conexao, $sql);
      	break;
+     case "6":
 
+		$preco = str_replace(",", ".", $preco);
+     	
+     	$sql = " update produto set quantidade_produto = $qtd, valor_produto = $preco, vencimento_produto = '$validade',
+     			descricao_produto = '$descricao', STATUS_PRODUTO = '$status' 
+				where id_produto = '$id' ";
+			
+			if (mysqli_query($conexao, $sql)) {
+				$response = array("success" => true);
+    			echo json_encode($response);
+			} 
+			else {
+				echo json_encode(array("statusCode"=>201));
+			}
+
+     	break;
     default:
         echo "Your favorite color is neither red, blue, nor green!";
 }
