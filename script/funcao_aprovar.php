@@ -5,14 +5,9 @@ include 'sessao.php';
 
 $sOption = $_POST['voption'];
 $sID     = $_POST['vid'];
-$vendedor = $_POST['vendedor'];
 
-$status = $_POST['status'];
-$qtd     = $_POST['qtd'];
-$preco = $_POST['preco'];
-$validade = $_POST['validade'];
-$id     = $_POST['id'];
-$descricao = $_POST['descricao'];
+
+
 
 
 
@@ -96,6 +91,7 @@ switch ($sOption) {
 		//$inserir = mysqli_query($conexao, $sql);
      	break;
      case "5":
+     $vendedor = $_POST['vendedor'];
      //sID é o cod_pedido_vendedor
 		if ($sOption = "5" and $sID <> ""){
 
@@ -163,6 +159,12 @@ switch ($sOption) {
 		//$inserir = mysqli_query($conexao, $sql);
      	break;
      case "6":
+     $status = $_POST['status'];
+     $qtd     = $_POST['qtd'];
+     $preco = $_POST['preco'];
+     $validade = $_POST['validade'];
+     $id     = $_POST['id'];
+     $descricao = $_POST['descricao'];
 
 		$preco = str_replace(",", ".", $preco);
      	

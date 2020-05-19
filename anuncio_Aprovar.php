@@ -1,6 +1,7 @@
 <?php
 include 'script/conexao.php';
 include 'script/sessao.php';
+include 'script/funcao_usuario.php';
 
 $cod_usuario = $_SESSION['cod_usuario'];
 
@@ -162,19 +163,44 @@ $existe = mysqli_num_rows($lista_Boleto);
 									$vendedor = $array['cod_cliente'];
 									$produto = $array['nome_produto'];
 									$categoria = $array['categoria_produto'];
+									switch ($categoria) {
+										case 'D':
+											$cat = 'Doce';
+											break;
+										case 'S':
+											$cat = 'Salgado';
+											break;
+										case 'B':
+											$cat = 'Bebida';
+											break;
+										default:
+											# code...
+											break;
+									}
 									$tipo = $array['tipo_produto'];
+									switch ($tipo) {
+										case 'P':
+											$tip = 'Perecível';
+										break;
+										case 'N':
+											$tip = 'Não-Perecível';
+										break;
+										default:
+											# code...
+										break;
+									}
 									$id = $array['id_produto'];
 								?>
 								<tr>
 									
 									<td><img src='<?php echo $img_produto; ?>' style="width:120px"></td>
 									<td><?php echo $produto; ?></td>
-									<td><?php echo $vendedor; ?></td>
+									<td><?php echo RetornaNome($vendedor); ?></td>
 									<td><?php echo $quantidade; ?></td>
-									<td><?php echo $validade; ?></td>
-									<td><?php echo $preco; ?></td>
-									<td><?php echo $categoria; ?></td>
-									<td><?php echo $tipo; ?></td>
+									<td><?php echo date('d/m/Y',strtotime($validade)); ?></td>
+									<td>R$ <?php echo number_format($preco,2,",","."); ?></td>
+									<td><?php echo $cat; ?></td>
+									<td><?php echo $tip; ?></td>
 									<td>
 										<button onclick="aprova(<?php echo trim($id); ?>)" type="submit" class="btn btn-success" value="1">Aprovar</button>
 										<a href="anuncio_Reprovar.php?id=<?php echo $id?>" class="btn btn-danger" role="button">Reprovar</a>

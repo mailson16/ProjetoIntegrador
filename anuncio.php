@@ -5,6 +5,7 @@ include 'script/sessao.php';
 $cod_usuario = $_SESSION['cod_usuario'];
 
 $sql ="select * from Produto where cod_cliente = $cod_usuario 
+	   and STATUS_PRODUTO in('A','I')
 	   ";
 $buscar = mysqli_query($conexao,$sql);
 

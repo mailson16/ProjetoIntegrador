@@ -54,8 +54,55 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 				fileReader.readAsDataURL(file)
 			})
 		})
+
+		function verifica() {
+
+			var produto = form.produto.value;
+			var categoria = form.categoria.value;
+			var tipo = form.tipo.value;
+			var quantidade = form.quantidade.value;
+			var preco = form.preco.value;
+			var validade = form.validade.value;
+			var descricao = form.descricao.value;
+			var arquivo = form.arquivo.value;
+
+			if (validade == "" ) {
+				alert('Por favor, informe a data de vencimento.'); $("input[name=validade]").focus();
+				return false;
+			}
+
+			if (produto == "" ) {
+				alert('Por favor, informe o nome do produto.'); $("input[name=produto]").focus();
+				return false;
+			}
+			if (categoria == "" ) {
+				alert('Por favor, informe a categoria.'); $("input[name=categoria]").focus();
+				return false;
+			}
+			if (tipo == "" ) {
+				alert('Por favor, informe o tipo.'); $("input[name=tipo]").focus();
+				return false;
+			}
+			if (quantidade == "" ) {
+				alert('Por favor, informe a quantidade.'); $("input[name=quantidade]").focus();
+				return false;
+			}
+			if (preco == "" ) {
+				alert('Por favor, informe o preço.'); $("input[name=preco]").focus();
+				return false;
+			}
+			if (descricao == "" ) {
+				alert('Por favor, informe a descricao.'); $("input[name=descricao]").focus();
+				return false;
+			}
+			if (arquivo == "" ) {
+				alert('É necessário colocar uma imagem.'); $("input[name=arquivo]").focus();
+				return false;
+			}
+
+        }
+
 	</script>
-	
 </head>
 <body class="bg-dark">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
@@ -156,12 +203,12 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 				<h4>+ Novo Anúncio</h4>
 			</div>
 			<div class="container" style="padding: 20px;">
-				<form action="insert_anuncio.php" method="post" enctype="multipart/form-data">
+				<form name="form" action="insert_anuncio.php" method="post" enctype="multipart/form-data">
 					<div class="row no-gutters">
 						<div class="form-row col-md-9">
 							<div class="form-group col-md-5">
 								<label class="font-weight-bold" for="inputNome">Produto</label>
-								<input type="text" class="form-control" name="produto">
+								<input type="text" class="form-control" name="produto" maxlength="50">
 							</div>
 							<div class="form-group col-md-3">
 								<label class="font-weight-bold">Categoria</label>
@@ -182,11 +229,11 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							</div>
 							<div class="form-group col-md-2">
 								<label class="font-weight-bold" for="inputEmail">Quantidade</label>
-								<input type="text" class="form-control" name="quantidade">
+								<input type="number" class="form-control" name="quantidade" min="0">
 							</div>
 							<div class="form-group col-md-2">
 								<label class="font-weight-bold">Valor Unit</label>
-								<input type="text" class="form-control" name="preco">
+								<input type="text" class="form-control" name="preco" id="preco" maxlength="5">
 							</div>
 							<div class="form-group col-md-3">
 								<label class="font-weight-bold">validade</label>
@@ -199,7 +246,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							
 							<div class="form-group col-md-11">
 								<label class="font-weight-bold">Descrição</label>
-								<textarea class="form-control" rows="5" name="descricao"></textarea>
+								<textarea class="form-control" rows="5" name="descricao" maxlength="500"></textarea>
 							</div>
 						</div>
 						
@@ -214,7 +261,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					
 					<div class="my-4" style="text-align: center">
 						<!--<button type="submit" class="btn btn-outline-primary">Registrar</button>-->
-						<input type="submit" name="send" value="Registrar">
+						<input onclick=" return verifica()" type="submit" name="send" value="Registrar">
 					</div>
 				</form>
 			</div>

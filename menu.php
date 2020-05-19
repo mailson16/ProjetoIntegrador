@@ -30,6 +30,10 @@ if(!isset($_SESSION['usuario'])){
 	header('location:index.php');
 }
 
+$sqlAnu ="select * from Produto where status_produto = 'P' ";
+$buscarAnu = mysqli_query($conexao,$sqlAnu);
+$existe2 = mysqli_num_rows($buscarAnu);
+
 $sqlBol = "select * from boleto
             where COD_CLIENTE  = $cod_usuario
             and status_boleto  = 'P' ";
@@ -93,7 +97,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					?>
 					<?php if ($_SESSION['tipo_usuario'] == 'A'){
 						echo "<li class='nav-item'>
-							<a class='nav-link' href='anuncio_Aprovar.php'>Anúncio</a>
+							<a class='nav-link' href='anuncio_Aprovar.php'>Anúncio <span class='badge badge-light' style='font-size: 12px'>$existe2</span></a>
 						</li>";
 						
 						}
