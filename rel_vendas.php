@@ -8,30 +8,23 @@ $cod_usuario = $_SESSION['cod_usuario'];
 $data_de=filter_input(INPUT_POST,'data_de',FILTER_SANITIZE_STRING);
 $data_ate=filter_input(INPUT_POST,'data_ate',FILTER_SANITIZE_STRING);
 $btn=filter_input(INPUT_POST,'pesquisa',FILTER_SANITIZE_STRING);
-$categoria=filter_input(INPUT_POST,'categoria',FILTER_SANITIZE_STRING);
 $total = "";
 
 if ($btn =='1') {
-	$sql = "select COD_VENDEDOR, SUM(VALOR_PEDIDO) as TOTAL_VENDA from pedido_vendedor
-	where COD_CLIENTE = $cod_usuario
+
+	//valor total vendido neste periodo
+	$sql = "select SUM(VALOR_PEDIDO) as VALOR_GERAL from pedido_vendedor 
+	where COD_VENDEDOR = $cod_usuario
 	and STATUS_PEDIDO = 'A'
-	and DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59'
-	GROUP BY COD_VENDEDOR";
-	$lista_Pedido = mysqli_query($conexao,$sql);
-	$total = mysqli_num_rows($lista_Pedido);
-
-	$sqlTotal = "select SUM(VALOR_PEDIDO) as TOTAL_VENDA from pedido_vendedor
-	where COD_CLIENTE = $cod_usuario
-	and STATUS_PEDIDO = 'A'
-	and DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59' ";
-	$bruto = mysqli_query($conexao,$sqlTotal);
-	while ($arrayBruto = mysqli_fetch_array($bruto)){
-		$valorBruto = $arrayBruto['TOTAL_VENDA'];
-
-
+	and DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59'";
+	$lista_total = mysqli_query($conexao,$sql);
+	$total = mysqli_num_rows($lista_total);
+	while ($array = mysqli_fetch_array($lista_total)){
+		$total = $array['VALOR_GERAL'];
 	}
-
 }
+
+//verifica se existe boleto pendende
 $sqlBol = "select * from boleto
             where COD_CLIENTE  = $cod_usuario
             and status_boleto  = 'P' ";
@@ -60,7 +53,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Acompanhamento de Estoque</title>
+	<title>Relatório de Vendas</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
@@ -70,6 +63,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript" src="script/personalizado.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <script type="text/javascript" >
 
@@ -88,28 +82,6 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 				return false;
 			}
         }
-		
-		function aprova(id) {
-			
-			document.getElementsByName.value = '1';
-			$("#siteModal").modal();
-			$.ajax({
-				url: 'script/funcao_aprovar.php',
-				type: 'POST',
-				data: {
-					vid: id,
-					voption: '4'
-				},
-				success: function (result) {
-					$("#siteModal").modal();
-					$("#cliente").html(result); 						
-				}
-
-			});
-
-		}
-
-        
 	</script>
 <style type="text/css">
 	#caixa{
@@ -117,21 +89,10 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 		background-color: #8290a9eb;
 		box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	}
-	#caixa2{
+	.caixa2{
 		justify-content: center; 
 		padding: 5%;
 	}
-	#caixa4{
-		justify-content: center; 
-		padding: 5%;
-	}
-	#caixa3{
-		border-radius: 5px;
-		border: 1px solid grey;
-		box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-
-	}
-
 
 </style>
 <body class="bg-light">
@@ -232,10 +193,10 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	</nav>
 	<div class="container" style="padding: 20px;">
 		<form name="form" action="" method="post">
-			<h4>Acompanhamento de Estoque</h4>
+			<h4>Relatório de Vendas</h4>
 			<hr>
 			<div class="container" id="caixa">
-				<div class="row" id="caixa2" >
+				<div class="row caixa2">
 					<div class="form-group col-md-3">
 						<label class="font-weight-bold">Período de:</label>
 						<input type="date" class="form-control" name="data_de">
@@ -244,15 +205,6 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 						<label class="font-weight-bold">Até:</label>
 						<input type="date" class="form-control" name="data_ate">
 					</div>
-					<div class="form-group col-md-7" id="caixa4" >
-					<label class="font-weight-bold">Categoria</label>
-					<select name="categoria" class="form-control">
-						<option value="">Selecionar...</option>
-						<option value="D">Doce</option>
-						<option value="S">Salgado</option>
-						<option value="B">Bebida</option>
-					</select>
-				</div>
 				</div>
 				
 				<div class="row" style="justify-content: center;">
@@ -265,72 +217,27 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 			<br>
 			<?php
 			if ($btn == 1) {
-			
-			
-			if($total >= 1){?>
-				<div class="col-md-3 text-center" id="caixa3">
-					<h4><b>Valor Total Gasto</b>:</h4>
-					<h5><?php echo number_format($valorBruto,2,",","."); ?></h5>
-				</div>
+				if($total >= 1){
 
-				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+			?>
+
+				<hr>
+				<div>
 					<div>
-						<br />
-						<?php
-						while ($arrayPedido = mysqli_fetch_array($lista_Pedido)){
-							$valor_pedido = $arrayPedido['TOTAL_VENDA'];
-							$vendedor = $arrayPedido['COD_VENDEDOR'];
-
-							$sql2 ="select distinct(p.ID_PEDIDO_VENDEDOR), p.VALOR_PEDIDO, p.DT_PEDIDO from pedido_vendedor p 
-							where p.COD_VENDEDOR = $vendedor
-							and p.cod_cliente = $cod_usuario
-							and p.STATUS_PEDIDO = 'A'
-							and p.DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59'
-							";
-							$pedido = mysqli_query($conexao,$sql2);
-
-							?>
-							<div class="show_hide" style="background-color: #5aa3cea6;">
-								<div class="row">
-									<div class="col-md-4 text-left">
-										<h5><b>Vendedor</b> : <?php echo RetornaNome($vendedor); ?></h5>
-									</div>
-									<div class="col-md-3 text-left">
-										<h5><b>Valor Total</b> : R$<?php echo number_format($valor_pedido,2,",",".");?></h5>
-									</div>
-								</div>
-							</div>
-
-							<div class="slidingDiv">
-								<table class="table table-light table-hover responsive" >
-									<thead>
-										<tr>
-											<th style="width:120px">Nº Pedido</th>
-											<th style="width:152px">Valor</th>
-											<th style="width:213px">Data</th>
-											<th style="width:213px"></th>
-										</tr>
-									</thead>
-									<?php
-									while ($array = mysqli_fetch_array($pedido)){
-										$id_pedido = $array['ID_PEDIDO_VENDEDOR'];
-										$valor = $array['VALOR_PEDIDO'];
-										$data = $array['DT_PEDIDO'];
-
-										?>
-
-										<tr>
-											<td><?php echo $id_pedido; ?></td>
-											<td> R$ <?php echo number_format($valor,2,",","."); ?></td>
-											<td><?php echo date('d/m/Y H:i:s',strtotime($data)); ?></td>
-											<td><button onclick="aprova(<?php echo trim($id_pedido); ?>)" type="button" class="btn btn-outline-warning"><i class="material-icons" style="font-size: 20px">add_box</i> Mais detalhes</button></td>
-										</tr>
-										<?php	
-									}?>
-								</table>
-							</div>
-						<?php
-						}?>
+						<h4>Total de vendas realizadas: <?php echo number_format($total,2,",",".")?></h4>
+						<small>(Período de <?php echo date('d/m/Y',strtotime($data_de)) ;?> até <?php echo date('d/m/Y',strtotime($data_ate)) ;?>)</small>
+					</div>
+				</div>
+				<br>
+				<br>
+				<div class="row">
+					<div style="justify-content: center;">
+						<div id="chart_div" style=" height: 500px;"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div style="justify-content: center;">
+						<div id="piechart" style=" height: 500px;"></div>
 					</div>
 				</div>
 			<?php
@@ -338,32 +245,119 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 				<div class="alert alert-danger" role="alert" style="text-align: center;">
 					Não existe nenhum pedido de compra neste período
 				</div>
-				<?php
+			<?php
 			}
 		}?>
 		</form>
 	</div>
-	<!--modal-->
-	<div class="modal fade" id="siteModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-body bg-light">
-					<div style="padding: 10px;">
-						<table class="table table-striped listaFichas">
-							<thead>
-								<tr>
-									<th style="width:120px">Produto</th>
-									<th style="width:328px"></th>
-									<th style="width:152px">Quant.</th>
-									<th style="width:213px">Valor Total</th>
-								</tr>
-							</thead>
-							<tbody id="cliente"></tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-		
+	<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart','bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawStuff() {
+      	var button = document.getElementById('change-chart');
+        var chartDiv = document.getElementById('chart_div');
+        var data = google.visualization.arrayToDataTable([
+          ['Produtos', 'Total', 'Unidades'],
+          <?php
+          $count_salgado_total = 0;
+          $count_doce_total = 0;
+          $count_bebida_total = 0;
+          $sqlId = "select pr.id_produto from carrinho_compras cc 
+		  	inner join produto pr on cc.COD_PRODUTO = pr.id_produto
+			INNER join pedido_vendedor p on cc.ID_PEDIDO = p.ID_PEDIDO
+			where p.COD_VENDEDOR= $cod_usuario
+			and  p.COD_VENDEDOR = pr.cod_cliente
+			and p.STATUS_PEDIDO = 'A'
+			and p.DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59'
+			group by pr.id_produto";
+	
+			$lista_id = mysqli_query($conexao,$sqlId);
+			while ($arrayId = mysqli_fetch_array($lista_id)){
+				$id = $arrayId['id_produto'];
+
+				//pega o nome,qtd,valor vendido desse produto
+				//**fazendo dessa forma, pois a query estava retornando o cod(3) duas vezes
+
+				$sqlProd = "select cc.NOME_PRODUTO, SUM(CC.PRECO_PRODUTO) as PRECO_PRODUTO, SUM(CC.QTD_PRODUTO) as QTD_PRODUTO,pr.categoria_produto FROM carrinho_compras cc
+				inner join pedido_vendedor p on cc.ID_PEDIDO = p.ID_PEDIDO
+				inner join produto pr on cc.COD_PRODUTO = pr.id_produto
+				where p.COD_VENDEDOR = $cod_usuario
+				and cc.COD_PRODUTO = $id
+				and p.STATUS_PEDIDO = 'A'
+				and p.DT_PEDIDO BETWEEN '$data_de 00:00:01' and '$data_ate 23:59:59'";
+				$lista_Produto = mysqli_query($conexao,$sqlProd);
+				$count_bebida = 0;
+				$count_doce = 0;
+				$count_salgado = 0;
+				while ($arrayProduto = mysqli_fetch_array($lista_Produto)){
+					$produto = $arrayProduto['NOME_PRODUTO'];
+					$vendido = $arrayProduto['PRECO_PRODUTO'];
+					$qtd = $arrayProduto['QTD_PRODUTO'];
+					$categoria = $arrayProduto['categoria_produto'];
+					if ($categoria == 'S') {
+						$count_salgado = $count_salgado + $qtd;
+					}if ($categoria == 'D') {
+						$count_doce = $count_doce + $qtd;
+					}if ($categoria == 'B'){
+						$count_bebida = $count_bebida + $qtd;
+					}
+
+					?>
+					['<?php echo $produto?>',<?php echo $vendido ?>, <?php echo $qtd ?>],
+				<?php
+				}
+				$count_salgado_total = $count_salgado + $count_salgado_total;
+				$count_doce_total = $count_doce + $count_doce_total;
+				$count_bebida_total = $count_bebida + $count_bebida_total;
+			}
+          
+          	?>
+        ]);
+
+        var materialOptions = {
+          width: 1125,
+          chart: {
+            title: 'Gráfico de Vendas por produtos',
+            subtitle: 'Comparativo de quantidade por valor recebido'
+          },
+          series: {
+            0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+            1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+          },
+          axes: {
+            y: {
+              distance: {label: 'Total Vendido (R$)'}, // Left y-axis.
+              brightness: {side: 'right', label: 'Quantidade (unid)'} // Right y-axis.
+            }
+          }
+        };
+
+          var materialChart = new google.charts.Bar(chartDiv);
+          materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+
+    };
+    function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Categoria', 'Quantidade'],
+          ['Bebida', <?php echo $count_bebida_total;?>],
+          ['Doce', <?php echo $count_doce_total;?>],
+          ['Salgado', <?php echo $count_salgado_total;?>],
+          
+        ]);
+
+        var options = {
+          width: 1125,
+          title: 'Gráfico de vendas por categoria'
+          
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>	
 </body>

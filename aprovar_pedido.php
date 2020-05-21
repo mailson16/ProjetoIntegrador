@@ -132,7 +132,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 									<div class='dropdown-divider'></div>
 									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
 									<div class='dropdown-divider'></div>
-									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+									<a class='dropdown-item' href='rel_vendas.php'>Relatório de Vendas</a>
     							</div>
 							 </li>";
 						
@@ -144,6 +144,18 @@ $existe = mysqli_num_rows($lista_Boleto);
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<?php 
+
+						if($existe == ''){
+						?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i></a>
+						<?php
+						}else{?>
+							<a class="nav-link" href="boleto_pendente.php"><i class="material-icons" style="font-size: 30px">email</i><span class="badge badge-light" style="font-size: 12px"><?php echo $existe;?></span></a><?php
+							
+						}?>
+					</li>
 					<li class="nav-item">
 						<?php 
 

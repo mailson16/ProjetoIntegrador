@@ -74,6 +74,9 @@ $existe = mysqli_num_rows($lista_Boleto);
 						<a class="nav-link" href="anuncio_Aprovar.php">Anúncio</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link" href="rel_vendas.php">Relatório</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="conta.php">Minha Conta</a>
 					</li>
 				</ul>

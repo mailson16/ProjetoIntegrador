@@ -161,6 +161,13 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 						
 						}
 					?>
+					<?php if ($_SESSION['tipo_usuario'] == 'A'){
+						echo "<li class='nav-item'>
+							<a class='nav-link' href='rel_geral.php'>Relatório</a>
+						</li>";
+						
+						}
+					?>
 
 					<?php if ($_SESSION['tipo_usuario'] == 'C'){
 						echo "<li class='nav-item active'>
@@ -178,7 +185,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 									<div class='dropdown-divider'></div>
 									<a class='dropdown-item' href='rel_boleto.php'>Relatório de Boleto</a>
 									<div class='dropdown-divider'></div>
-									<a class='dropdown-item' href='rel_estoque.php'>Acompanhamento do Estoque</a>
+									<a class='dropdown-item' href='rel_vendas.php'>Relatório de Vendas</a>
     							</div>
 							 </li>";
 						

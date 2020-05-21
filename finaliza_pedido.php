@@ -203,7 +203,7 @@ echo '<META HTTP-EQUIV="REFRESH" CONTENT="4; URL=carrinho.php"/>';
               </div><?php
   
               unset($_SESSION['itens']);  //após finalizar a compra, limpa o carrinho de compras
-              echo '<META HTTP-EQUIV="REFRESH" CONTENT="6; URL=pedido.php"/>';
+              echo '<META HTTP-EQUIV="REFRESH" CONTENT="7; URL=pedido.php"/>';
             }else{?>
               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
