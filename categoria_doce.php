@@ -60,7 +60,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -171,7 +171,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	</nav>
 	
 	<div class="card my-1">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(to right, #ee6565 , #007bff);">
 		
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -235,7 +235,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
       									<p class="card-text" style="color: green">Em estoque: <?php echo $quantidade; ?></p>
       									<p class="card-text"><b>R$ <?php echo number_format($preco,2,",","."); ?></b></p>
       									<?php if ($quantidade > 0){?>
-											<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn btn-warning" role="button"><i class="material-icons">shopping_cart</i> Adicionar ao Carrinho</a><?php
+											<a href="carrinho.php?add=carrinho&id=<?php echo $id?>" class="btn" style="background: #ee6565;color: white" role="button"><i class="material-icons">shopping_cart</i> Adicionar ao Carrinho</a><?php
 
       									}else{?>
 

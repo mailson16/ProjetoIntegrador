@@ -18,7 +18,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		<div class="container">
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,18 +58,14 @@
 
 			<div class="carousel-item active">
 
-				<img src="imagens/tamanho.jpg" class="img-fluid d-block">
+				<img src="imagens/menu.png" class="img-fluid d-block">
 				<div class="carousel-caption d-none d-md-block text-light">
-					<h1>Texto 1</h1>
-					<p class="lead">abhxbhbhhbdhbhchdvhcbdh</p>
 				</div>
 
 			</div>
 			<div class="carousel-item">
-				<img src="imagens/tamanho2.jpg" class="img-fluid d-block">
+				<img src="imagens/menu4.png" class="img-fluid d-block">
 				<div class="carousel-caption d-none d-md-block text-light">
-					<h1>Texto 3</h1>
-					<p class="lead">diferente do  primeiro cd c dh chd hc d</p>
 				</div>
 			</div>
 		</div>
@@ -121,7 +117,7 @@
 				</div>
 				<div class="card">
 					<a href="categoria_bebida.php">
-					<img class="card-img-top" src="imagens/suco2.png" alt="...">
+					<img class="card-img-top" src="imagens/bebidas.jpg" alt="...">
 					</a>
 				</div>
 			</div>
