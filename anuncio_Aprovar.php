@@ -65,7 +65,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -129,8 +129,8 @@ $existe = mysqli_num_rows($lista_Boleto);
 	</nav>
 		
 		<div class="card my-1">
-			<div class="card-header bg-primary">
-				<h4>Anúncios Para Aprovação</h4>
+			<div class="card-header" style="background: linear-gradient(to right, #ee6565 , #007bff)";>
+				<h4 style="color: white">Anúncios Para Aprovação</h4>
 			</div>
 			<div style="padding: 10px">
 				<div class="alert alert-success alert-dismissible" id="success" style="display:none;">

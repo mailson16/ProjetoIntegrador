@@ -108,7 +108,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -206,8 +206,8 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	</nav>
 	
 		<div class="card my-1">
-			<div class="card-header bg-primary">
-				<h4>+ Novo Anúncio</h4>
+			<div class="card-header" style="background: linear-gradient(to right, #ee6565 , #007bff);">
+				<h4 style="color: white"> Novo Anúncio</h4>
 			</div>
 			<div class="container" style="padding: 20px;">
 				<form name="form" action="insert_anuncio.php" method="post" enctype="multipart/form-data">
@@ -268,7 +268,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					
 					<div class="my-4" style="text-align: center">
 						<!--<button type="submit" class="btn btn-outline-primary">Registrar</button>-->
-						<input onclick=" return verifica()" type="submit" name="send" value="Registrar">
+						<input onclick=" return verifica()" type="submit" name="send" class="btn btn-dark" value="Registrar">
 					</div>
 				</form>
 			</div>

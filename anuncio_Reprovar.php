@@ -3,6 +3,7 @@ include 'script/conexao.php';
 include 'script/sessao.php';
 
 $id_produto = $_GET['id'];
+$cod_usuario = $_SESSION['cod_usuario'];
 
 $motivo=filter_input(INPUT_POST,'descricao',FILTER_SANITIZE_STRING);
 $option=filter_input(INPUT_POST,'send',FILTER_SANITIZE_STRING);
@@ -54,7 +55,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -118,8 +119,8 @@ $existe = mysqli_num_rows($lista_Boleto);
 	</nav>
 		
 		<div class="card my-1">
-			<div class="card-header bg-danger">
-				<h4>Anúncio Reprovado</h4>
+			<div class="card-header"style="background: linear-gradient(to right, #ee6565 , #007bff);">
+				<h4 style="color: white">Anúncio Reprovado</h4>
 			</div>
 			<div style="padding: 10px">
 				<form action="" method="post">
@@ -136,7 +137,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 							</div>
 							
 							<div class="form-group col-md-10">
-								<label class="font-weight-bold">Motivo</label>
+								<label class="font-weight-bold">Observação</label>
 								<textarea class="form-control" rows="5" name="descricao"></textarea>
 							</div>
 						</div>

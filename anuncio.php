@@ -118,11 +118,11 @@ if ($_SESSION['tipo_usuario'] == 'V'){
     }
 	</script>
 </head>
-<body class="bg-dark" style="padding-left: 30px">
+<body class="bg-dark">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -233,9 +233,9 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 		
 	</nav>
 	
-	<div class="card my-1">
-		<div class="card-header bg-primary">
-			<h4>Anúncios Cadastrados</h4>
+	<div class="card my-0">
+		<div class="card-header" style="background: linear-gradient(to right, #ee6565 , #007bff);">
+			<h4 style="color: white">Anúncios Cadastrados</h4>
 		</div>
 		<div style="padding: 10px">
 			<div class="my-4">
@@ -278,7 +278,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							<td>R$ <?php echo number_format($preco,2,",","."); ?></td>
 							<td><?php echo $sit ?></td>
 							<td>
-							<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $id ?>" data-whateverqtd="<?php echo $quantidade ?>"data-whateverpreco="<?php echo $preco ?>"data-whateverval="<?php echo $validade ?>" data-whatevernome="<?php echo $nome ?>" data-whateverdetalhe="<?php echo $detalhe ?>" data-whateversit="<?php echo $situacao ?>">Editar</button></td>
+							<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $id ?>" data-whateverqtd="<?php echo $quantidade ?>"data-whateverpreco="<?php echo $preco ?>"data-whateverval="<?php echo $validade ?>" data-whatevernome="<?php echo $nome ?>" data-whateverdetalhe="<?php echo $detalhe ?>" data-whateversit="<?php echo $situacao ?>">Editar</button></td>
 						</tr>
 						<?php
 					}

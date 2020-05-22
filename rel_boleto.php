@@ -160,14 +160,18 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 		box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 
 	}
-
+	body{
+		 background: url("imagens/fundo4.png");
+		 background-size:cover;
+		 background-color: rgba(0, 123, 245, 0.4);
+	}
 
 </style>
-<body class="bg-light">
+<body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>

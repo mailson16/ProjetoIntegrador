@@ -168,7 +168,7 @@
 				<div class="modal-body bg-dark">
 					<div style="padding: 10px;">
 						<center>
-							<img src="imagens/logo.png" style="height: 250px">
+							<img src="imagens/logo3.png" style="height: 250px">
 						</center>
 						<form  method="post" action="index1.php">
 							<div class="form-group text-light">

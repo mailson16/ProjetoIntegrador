@@ -108,7 +108,8 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 		padding: 5%;
 	}
 	body{
-		 background: url("imagens/logo3.png");
+		 background: url("imagens/fundo4.png");
+		 background-size:cover;
 		 background-color: rgba(0, 123, 245, 0.4);
 	}
 
@@ -117,7 +118,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px">
 		
 			<a class="navbar-brand mr-0 mr-md-2">
-				<img src="imagens/logo.png" style="height:150px">
+				<img src="imagens/logo3.png" style="height:200px">
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -141,7 +142,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					<li class="nav-item">
 						<a class="nav-link" href="produtos.php">Produtos</a>
 					</li>					
-					<?php if ($_SESSION['tipo_usuario'] == 'A' or $_SESSION['tipo_usuario'] =='V'){
+					<?php if ($_SESSION['tipo_usuario'] =='V'){
 						echo "<li class='nav-item'>
 								<a class='nav-link' href='anuncio.php'>Anúncio</a>
 							  </li>";

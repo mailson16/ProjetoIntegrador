@@ -182,6 +182,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 								<th>Vendedor</th>
 								<th>Valor do Boleto</th>
 								<th>Mês referente</th>
+								<th></th>
 							</tr>
 						</thead>
 
@@ -192,6 +193,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							$vendedor = $array['COD_VENDEDOR'];
 							$valor = $array['VALOR_BOLETO'];
 							$mesReferente = $array['PERIODO_BOLETO'];
+							$id_boleto = $array['ID_BOLETO'];
 							switch ($mesReferente) {
 								case "01":    $mes = 'Janeiro';     break;
 								case "02":    $mes = 'Fevereiro';   break;
@@ -212,6 +214,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 								<td><?php echo RetornaNome($vendedor); ?></td>
 								<td>R$ <?php echo number_format($valor,2,",","."); ?></td>
 								<td><?php echo $mes; ?></td>
+								<td><a href="boleto_pdf.php?id=<?php echo $id_boleto?>&usu=<?php echo $cod_usuario?>" target="_blank" ><i class="material-icons" style="font-size: 35px; color: #212529">archive</i></a></td>
 							</tr>
 							<?php
 						}

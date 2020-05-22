@@ -251,9 +251,13 @@ $existe = mysqli_num_rows($lista_Boleto);
 				</ul>
 			</div>
 	</nav>
+	<div class="card my-0">
+		<div class="card-header" style="background: linear-gradient(to right, #ee6565 , #007bff);">
+			<h4 style="color: white">Meus Pedidos</h4>
+		</div>
+	</div>
 	<div style="padding: 10px">
 		<br>
-		<h4 style="padding: 10px">Meus Pedidos</h4>
 		<br>
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
