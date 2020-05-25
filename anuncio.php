@@ -10,7 +10,7 @@ $sql ="select * from Produto where cod_cliente = $cod_usuario
 $buscar = mysqli_query($conexao,$sql);
 
 
-$sql2 ="select p.nome_produto, p.imagem_produto, a.msg_negado, p.id_produto from Produto p
+$sql2 ="select p.nome_produto, p.imagem_produto, a.msg_negado, p.id_produto, p.categoria_produto,p.quantidade_produto,p.valor_produto,p.vencimento_produto, p.descricao_produto, p.tipo_produto from Produto p
 		inner join anuncio_negado a on p.id_produto = a.id_produto
  		where a.cod_cliente = $cod_usuario 
 	    and status_produto = 'N'";
@@ -107,6 +107,35 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					id,
 					descricao,
 					voption: '6'
+				},
+                cache: false,
+                success: function(response) {
+                    location.reload();
+                    //$(".resultado").html(response); //para mostrar alguma mensagem na tela
+                }
+        });   
+       
+    }
+    function corrigir() {
+  
+        var categoria 	= form2.categoria.value;
+        var qtd 		= form2.qtd.value;
+        var preco 		= form2.preco.value;
+        var validade 	= form2.validade.value;
+        var id 			= form2.id_produto.value;
+        var descricao 	= form2.descricao.value;
+ 
+        $.ajax({
+                url: 'script/funcao_aprovar.php',
+				type: 'POST',
+                data: {
+					categoria,
+					qtd,
+					preco,
+					validade,
+					id,
+					descricao,
+					voption: '7'
 				},
                 cache: false,
                 success: function(response) {
@@ -310,6 +339,13 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 						$nome_produto = $array['nome_produto'];
 						$motivo = $array['msg_negado'];
 						$id = $array['id_produto'];
+						$categoria = $array['categoria_produto'];
+						$quantidade = $array['quantidade_produto'];
+						$preco = $array['valor_produto'];
+						$validade = $array['vencimento_produto'];
+						$descricao = $array['descricao_produto'];
+						$tipo = $array['tipo_produto'];
+						
 						?>
 						<tr>
 									
@@ -317,8 +353,9 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							<td><?php echo $nome_produto; ?></td>
 							<td><?php echo $motivo; ?></td>
 							<td>
-								<a href="anuncio_Reprovado_editar.php?id=<?php echo $id?>" class="btn btn-info" role="button">Corrigir</a>
-								<button onclick="excluir(<?php echo trim($id); ?>)" class="btn btn-danger" value="1">Excluir</button>
+								<!--<a href="anuncio_Reprovado_editar.php?id=<?php //echo $id?>" class="btn btn-outline-info" role="button">Corrigir</a>-->
+								<button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#exampleModal2" data-whatever="<?php echo $id ?>" data-whateverqtd="<?php echo $quantidade ?>"data-whateverpreco="<?php echo $preco ?>"data-whateverval="<?php echo $validade ?>" data-whatevernome="<?php echo $nome_produto ?>" data-whateverdetalhe="<?php echo $descricao ?>" data-whatevertipo="<?php echo $tipo ?>" data-whatevercategoria="<?php echo $categoria ?>">Corrigir</button>
+								<button onclick="excluir(<?php echo trim($id); ?>)" class="btn btn-outline-danger" value="1">Excluir</button>
 							</td>
 
 						</tr>
@@ -362,6 +399,48 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 							<input type="hidden" name="id_produto" id="id_produto">
 							<div class="modal-footer">
 								<button onclick=" return atualizar()" type="button" class="btn btn-primary">Atualizar</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"></h5>
+					</div>
+					<div class="modal-body">
+						<form name="form2" action="" method="post">
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Categoria:</label>
+								<select class="form-control" name="categoria" id="teste">
+									<option value="B" <?php ($categoria == 'B')?'selected':''?> >Bebida</option>
+									<option value="D" <?php ($categoria == 'D')?'selected':''?> >Doce</option>
+									<option value="S" <?php ($categoria == 'S')?'selected':''?> >Salgado</option>
+								</select> 
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Quantidade:</label>
+								<input type="number" class="form-control" name="qtd" id="qtd">
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Preço:</label>
+								<input type="number" class="form-control" name="preco" id="preco">
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">Validade:</label>
+								<input type="date" class="form-control" name="validade" id="validade">
+							</div>
+							<div class="form-group">
+								<label for="message-text" class="col-form-label">Descrição:</label>
+								<textarea class="form-control" name="descricao" id="descricao"></textarea>
+							</div>
+							<input type="hidden" name="id_produto" id="id_produto">
+							<div class="modal-footer">
+								<button onclick=" return corrigir()" type="button" class="btn btn-primary">Atualizar</button>
 							</div>
 						</form>
 					</div>
@@ -421,6 +500,29 @@ if ($_SESSION['tipo_usuario'] == 'V'){
   modal.find('.modal-body #validade').val(recipientval)
   modal.find('.modal-body textarea').val(recipientdetalhe)
   modal.find('.modal-body select').val(recipientsituacao)
+
+
+})
+		$('#exampleModal2').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var recipient = button.data('whatever') // Extract info from data-* attributes
+  var recipientnome = button.data('whatevernome') // Extract info from data-* attributes
+  var recipientval = button.data('whateverval') // Extract info from data-* attributes
+  var recipientpreco = button.data('whateverpreco') // Extract info from data-* attributes
+  var recipientqtd = button.data('whateverqtd') // Extract info from data-* attributes
+  var recipientdetalhe = button.data('whateverdetalhe') // Extract info from data-* attributes
+  var recipientcategoria = button.data('whatevercategoria') // Extract info from data-* attributes
+  
+  var modal = $(this)
+  //modelo para usar com string
+  //modal.find('.modal-title').text('New message to ' + recipientnome)
+  modal.find('.modal-title').text(recipientnome)
+  modal.find('.modal-body #id_produto').val(recipient)
+  modal.find('.modal-body #qtd').val(recipientqtd)
+  modal.find('.modal-body #preco').val(recipientpreco)
+  modal.find('.modal-body #validade').val(recipientval)
+  modal.find('.modal-body textarea').val(recipientdetalhe)
+  modal.find('.modal-body select').val(recipientcategoria)
 
 
 })

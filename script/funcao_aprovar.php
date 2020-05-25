@@ -181,6 +181,33 @@ switch ($sOption) {
 			}
 
      	break;
+     case "7":
+     $categoria = $_POST['categoria'];
+     $qtd     = $_POST['qtd'];
+     $preco = $_POST['preco'];
+     $validade = $_POST['validade'];
+     $id     = $_POST['id'];
+     $descricao = $_POST['descricao'];
+
+		$preco = str_replace(",", ".", $preco);
+
+		$sql2 = " delete from anuncio_negado 
+				where ID_PRODUTO = '$id' ";
+			mysqli_query($conexao, $sql2);
+     	
+     	$sql = " update produto set quantidade_produto = $qtd, valor_produto = $preco, vencimento_produto = '$validade',
+     			descricao_produto = '$descricao', categoria_produto = '$categoria', STATUS_PRODUTO = 'P' 
+				where id_produto = '$id' ";
+			
+			if (mysqli_query($conexao, $sql)) {
+				$response = array("success" => true);
+    			echo json_encode($response);
+			} 
+			else {
+				echo json_encode(array("statusCode"=>201));
+			}
+
+     	break;
     default:
         echo "Your favorite color is neither red, blue, nor green!";
 }

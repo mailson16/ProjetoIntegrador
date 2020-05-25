@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="initial-scale=1.0, user=scalable=no" />
 	<title>LeaderNet</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
-	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<style type="text/css">
-		
-	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script type="text/javascript" >
+
+		function logar() {
+  
+        var usuario =  document.getElementsByName("usuario")[0].value
+        var senha 	= document.getElementsByName("senha")[0].value
+ 
+        $.ajax({
+                url: 'index1.php',
+				type: 'POST',
+                data: {
+					usuario2: usuario,
+					senha2: senha,
+					voption: '1'
+				},
+                cache: false,
+                success: function(response) {
+                	if(response == "true"){
+                		window.location.href = "menu.php";
+                	}else{
+                		$(".resultado").html(response); //para mostrar alguma mensagem na tela
+                	}
+                    //
+                    //
+                }
+        });   
+       
+    }
+	</script>
 </head>
 <body style="background-color: rgba(231, 29, 29, 0.68);">
 	
@@ -170,7 +196,6 @@
 						<center>
 							<img src="imagens/logo3.png" style="height: 250px">
 						</center>
-						<form  method="post" action="index1.php">
 							<div class="form-group text-light">
 								<label>Usuário</label>
 								<input type="text" class="form-control" name="usuario" placeholder="Usuário" autocomplete="off" required>
@@ -181,25 +206,18 @@
 							</div>
 							<br>
 							<div class="form-group" style="text-align: center;">
-								<button type="submit" class="btn btn-outline-success btn-md">&nbsp;&nbsp;Logar&nbsp;&nbsp;</button>
+								<button onclick=" return logar()" type="button" class="btn btn-outline-success btn-md">&nbsp;&nbsp;Logar&nbsp;&nbsp;</button>
+							</div>
+							<div class="resultado" style="text-align: center;">
+
 							</div>
 							<center class="text-light">
 								<small>Você não possui cadastro? Cique <a href="cadastro_cliente.php"> aqui</a></small>
 							</center>
-						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-
-	<!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
 </body>
 </html>

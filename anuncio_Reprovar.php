@@ -13,6 +13,7 @@ $vendedor=filter_input(INPUT_POST,'vendedor',FILTER_SANITIZE_STRING);
 if ($option == '1') {
 	$sql = " INSERT INTO anuncio_negado (id_produto, cod_cliente, msg_negado) VALUES 
 		('$id_produto','$vendedor','$motivo')";
+		echo "$sql";
 		$inserir = mysqli_query($conexao, $sql);
 
 	$sql2 = " update Produto set STATUS_PRODUTO = 'N' 
@@ -126,9 +127,9 @@ $existe = mysqli_num_rows($lista_Boleto);
 				<form action="" method="post">
 					<div class="container" style="padding: 20px;">
 						<div class="form-row col-md-10">
-							<div class="form-group col-md-5">
+							<div class="form-group col-md-5" style="display: none">
 								<label class="font-weight-bold" for="inputNome">Vendedor</label>
-								<input type="text" class="form-control" name="vendedor" value="<?php echo $vendedor ?>">
+								<input type="hidden" class="form-control" name="vendedor" value="<?php echo $vendedor ?>">
 							</div>
 							
 							<div class="form-group col-md-5">
