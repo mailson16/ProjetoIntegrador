@@ -13,20 +13,21 @@ $U_Dia = date("Y-m-t");
 $cod_usuario = $_SESSION['cod_usuario'];
 
 //lista os que estão aguardando aprovação(colocar pelo dia inicio e dia fim de mes)
-$sql2 = "select * from pedido_vendedor
-         where COD_CLIENTE = $cod_usuario
-         and STATUS_PEDIDO = 'P'
-         and DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
-         order by DT_PEDIDO desc";
+$sql2 = "select DISTINCT  p.ID_PEDIDO, p.VALOR_PEDIDO, p.DT_PEDIDO from pedido p
+		inner join pedido_vendedor pv on p.ID_PEDIDO = PV.ID_PEDIDO
+         where pv.COD_CLIENTE = $cod_usuario
+         and pv.STATUS_PEDIDO in ('P','A')
+         and pv.DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
+         order by pv.DT_PEDIDO desc";
 $lista_Pedido = mysqli_query($conexao,$sql2);
 
 //lista os pedidos finalizados(colocar pelo dia inicio e dia fim de mes)
-$sql4 = "select * from pedido_vendedor
+$sqlF = "select * from pedido_vendedor
          where COD_CLIENTE = $cod_usuario
          and STATUS_PEDIDO = 'A'
          and DT_PEDIDO BETWEEN '$P_Dia 00:00:01' and '$U_Dia 23:59:59'
          order by DT_PEDIDO desc";
-$lista_Pedido_Finalizados = mysqli_query($conexao,$sql4);
+$lista_Pedido_Finalizados = mysqli_query($conexao,$sqlF);
 
 
 //se for o vendedor vai aparecer a quantidade de pedidos a serem aprovados
@@ -69,7 +70,7 @@ $existe = mysqli_num_rows($lista_Boleto);
 </head>
 <script type="text/javascript">
 	$(document).ready(function () {
-            $(".slidingDiv").hide();
+            //$(".slidingDiv").hide();
             $(".show_hide").show();
             $(".show_hide").click(function () {
                 $(this).next().slideToggle();
@@ -146,6 +147,7 @@ $existe = mysqli_num_rows($lista_Boleto);
     cursor: pointer;
 
 	}
+	
 
 </style>
 
@@ -261,16 +263,16 @@ $existe = mysqli_num_rows($lista_Boleto);
 		<br>
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">
-				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pendentes</a>
+				<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pedidos</a>
 			</li>
-			<li class="nav-item">
+			<!--<li class="nav-item">
 				<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Finalizados</a>
-			</li>
+			</li>-->
 			<?php 
 			if ($_SESSION['tipo_usuario'] == 'V') {?>
 				<li class="nav-item btn-warning">
 					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile2" aria-selected="false">
-						Aprovação
+						Aprovar
 					<?php 
 						if ($numero_pedidos >= 1) {?>
 							<span class="badge badge-light" style="font-size: 12px"><?php echo "$numero_pedidos";?></span>
@@ -293,70 +295,97 @@ $existe = mysqli_num_rows($lista_Boleto);
 					<br />
 					<?php
 					while ($arrayPedido = mysqli_fetch_array($lista_Pedido)){
-						$id = $arrayPedido['ID_PEDIDO_VENDEDOR'];
+						$id_pedido = $arrayPedido['ID_PEDIDO'];
 						$data = $arrayPedido['DT_PEDIDO'];
 						$valor_pedido = $arrayPedido['VALOR_PEDIDO'];
-						$vendedor = $arrayPedido['COD_VENDEDOR'];
 
-
-						$sql ="select * from pedido_vendedor p 
-						inner join pedido pe on p.ID_PEDIDO = pe.ID_PEDIDO
-						inner join carrinho_compras cc on pe.ID_PEDIDO = cc.ID_PEDIDO
-						inner join produto prod on cc.COD_PRODUTO = prod.id_produto
-						where p.ID_PEDIDO_VENDEDOR= $id
-						and prod.cod_cliente = $vendedor";
-						$pedido = mysqli_query($conexao,$sql);
-
+						//pego a quantidade de vendedores nesse pedido
+						$sql2 ="select count(DISTINCT(pv.ID_PEDIDO_VENDEDOR)) as lista from pedido_vendedor pv
+						inner join carrinho_compras cc on pv.ID_PEDIDO = cc.ID_PEDIDO
+						where pv.ID_PEDIDO = $id_pedido";
+						$qtdVend = mysqli_query($conexao,$sql2);
+						while ($arrayQtdVend = mysqli_fetch_array($qtdVend)){
+							$qtdVendedor = $arrayQtdVend['lista'];
+						}
 						?>
 						<div class="show_hide" style="background-color: #5aa3cea6;">
 							<div class="row">
 								<div class="col-md-2 text-left">
-									<b>N° Pedido</b> : <?php echo "$id";?>
+									<b>N° Pedido</b> : <?php echo "$id_pedido";?>
 								</div>
-								<div class="col-md-2 text-left">
+								<div class="col-md-4 text-center">
 									<b>Valor do Pedido</b> : <?php echo number_format($valor_pedido,2,",",".");?>
 								</div>
-								<div class="col-md-4 text-left">
-									<b>Vendedor</b> : <?php echo RetornaNome($vendedor); ?>
-								</div>
-								<div class="col-md-3 text-left">
+								<div class="col-md-5 text-right">
 									<b>Data do Pedido</b> : <?php echo date('d/m/Y H:i:s',strtotime($data));?>
 								</div>
 							</div>
 						</div>
-
 						<div class="slidingDiv">
-							<table class="table table-light table-hover responsive" >
-								<thead>
-									<tr>
-										<th style="width:120px">Produto</th>
-										<th style="width:328px"></th>
-										<th style="width:152px">Quant.</th>
-										<th style="width:213px">Valor Total</th>
-									</tr>
-								</thead>
-								<?php
-								while ($array = mysqli_fetch_array($pedido)){
-									$produto = $array['imagem_produto'];
-									$nome = $array['nome_produto'];
-									$quantidade = $array['QTD_PRODUTO'];
-									$vendedor = $array['cod_cliente'];
-									$preco = $array['PRECO_PRODUTO'];
-
-									?>
-
-									<tr>
-										<td><img src='<?php echo $produto; ?>' style="width:120px"></td>
-										<td><?php echo $nome; ?></td>
-										<td><?php echo $quantidade; ?></td>
-										<td><?php echo number_format($preco,2,",","."); ?></td>
-									</tr>
-									<?php	
-								}?>
-							</table>
-						</div>
 						<?php
-					}?>
+								//pego o id de cada pedido vendedor
+
+								$sql3 ="select DISTINCT(pv.ID_PEDIDO_VENDEDOR), pv.COD_VENDEDOR from pedido_vendedor pv
+								inner join carrinho_compras cc on pv.ID_PEDIDO = cc.ID_PEDIDO
+								where pv.ID_PEDIDO = $id_pedido";?>
+
+								
+									<table class="table table-light table-hover responsive" >
+										<thead>
+											<tr>
+												<th></th>
+												<th style="width:200px">Produto</th>
+												<th>Quant.</th>
+												<th>Valor Total</th>
+												<th>Status Pedido</th>
+												<th>Vendedor</th>
+											</tr>
+										</thead><?php
+										$idPedidos = mysqli_query($conexao,$sql3);
+										while ($arrayIdPedidos = mysqli_fetch_array($idPedidos)){
+											$id = $arrayIdPedidos['ID_PEDIDO_VENDEDOR'];
+											$vendedor = $arrayIdPedidos['COD_VENDEDOR'];
+
+											//detallhe de cada pedido
+											$sql4 ="select prod.imagem_produto, prod.nome_produto, cc.QTD_PRODUTO, prod.cod_cliente, cc.PRECO_PRODUTO, p.STATUS_PEDIDO, p.COD_VENDEDOR from pedido_vendedor p 
+											inner join pedido pe on p.ID_PEDIDO = pe.ID_PEDIDO
+											inner join carrinho_compras cc on pe.ID_PEDIDO = cc.ID_PEDIDO
+											inner join produto prod on cc.COD_PRODUTO = prod.id_produto
+											where p.ID_PEDIDO_VENDEDOR= $id
+											and prod.cod_cliente = $vendedor";
+											$pedido = mysqli_query($conexao,$sql4);
+
+											while ($array = mysqli_fetch_array($pedido)){
+												$produto = $array['imagem_produto'];
+												$nome = $array['nome_produto'];
+												$quantidade = $array['QTD_PRODUTO'];
+												$vendedor = $array['cod_cliente'];
+												$preco = $array['PRECO_PRODUTO'];
+												$status = $array['STATUS_PEDIDO'];
+												$nome_vend = $array['COD_VENDEDOR'];
+												if ($status == 'A') {
+													$vsatus =  "<td style='color:green'>Aprovado</td>";
+												}else{
+													$vsatus = "<td style='color:orange'>Pendente</td>";
+												}
+												?>
+
+												<tr>
+													<td><img src='<?php echo $produto; ?>' style="width:120px"></td>
+													<td><?php echo $nome; ?></td>
+													<td><?php echo $quantidade; ?></td>
+													<td><?php echo number_format($preco,2,",","."); ?></td>
+													<?php echo $vsatus;?>
+													<td><?php echo retornaNome($nome_vend); ?></td>
+												</tr>
+												<?php	
+											}
+										}?>
+									</table>
+								</tr>
+							</table>
+						</div><?php							
+					}?>	
 				</div>
 			</div>
 			<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
