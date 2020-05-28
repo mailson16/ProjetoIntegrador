@@ -86,11 +86,10 @@
 <body class="bg-dark">
 	<div class="container" >
 		<div class="card my-4">
-			<div class="card-header" style="background: linear-gradient(to right, #ee6565 , #007bff);">
-				<h4 style="color: white">Cadastro</h4>
+			<div class="card-header bg-primary">
+				<h4>Cadastro</h4>
 			</div>
 			<div class="container" style="background-color: #e9ecef">
-				<br>
 				<form action="insert_cadastro.php" method="post" name="form">
 					<div class="form-row">
 						<div class="form-group col-md-6">
@@ -123,7 +122,7 @@
 								<option value="0">Selecionar...</option>
 								<option value="C">Cliente</option>
 								<option value="V">Vendedor</option>
-							<!--	<option value="A">Admin</option>-->
+								<option value="A">Admin</option>
 							</select>
 						</div>
 					</div>
