@@ -365,8 +365,10 @@ $existe = mysqli_num_rows($lista_Boleto);
 												$nome_vend = $array['COD_VENDEDOR'];
 												if ($status == 'A') {
 													$vsatus =  "<td style='color:green'>Aprovado</td>";
-												}else{
+												}if($status == 'P') {
 													$vsatus = "<td style='color:orange'>Pendente</td>";
+												}if($status == 'I') {
+													$vsatus = "<td style='color:red'>Não aprovado</td>";
 												}
 												?>
 

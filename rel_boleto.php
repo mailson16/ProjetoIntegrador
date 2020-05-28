@@ -401,7 +401,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 										//boleto pendente, falta ser pago
 									if ($status_boleto == 'P') {?>
 										<div class="col-md-12 text-center">
-											<button onclick="baixar(<?php echo trim($id_boleto); ?>)" type="button" class="btn btn-outline-success"> Baixar Boleto </button>
+											<button onclick="baixar(<?php echo trim($id_boleto); ?>)" type="button" class="btn btn-success"> Baixar Boleto </button>
 										</div><?php
 										//boleto já foi pago, não vai aparecer botão
 									}elseif ($status_boleto == 'F') {?>
@@ -411,7 +411,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 									}else {?>
 										<input TYPE="hidden" NAME="mes" VALUE='<?php echo($mes)?>'>
 										<div class="col-md-12 text-center">
-											<button onclick="aprova()" type="button" class="btn btn-outline-primary"> Geral Boleto </button>
+											<button onclick="aprova()" type="button" class="btn btn-primary"> Geral Boleto </button>
 											</div><?php
 									}?>
 									

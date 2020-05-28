@@ -178,14 +178,14 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					</li>
 					<?php if ($_SESSION['tipo_usuario'] =='V'){
 						echo "<li class='nav-item'>
-							<a class='nav-link' href='anuncio.php'>Anúncio</a>
+							<a class='nav-link active' href='anuncio.php'>Anúncio</a>
 						</li>";
 						
 						}
 					?>
 					<?php if ($_SESSION['tipo_usuario'] == 'A'){
 						echo "<li class='nav-item'>
-							<a class='nav-link' href='anuncio_Aprovar.php'>Anúncio</a>
+							<a class='nav-link active' href='anuncio_Aprovar.php'>Anúncio</a>
 						</li>";
 						
 						}
@@ -199,7 +199,7 @@ if ($_SESSION['tipo_usuario'] == 'V'){
 					?>
 
 					<?php if ($_SESSION['tipo_usuario'] == 'C'){
-						echo "<li class='nav-item active'>
+						echo "<li class='nav-item'>
 							<a class='nav-link' href='rel_usuario.php'>Relatório</a>
 						</li>";
 						
